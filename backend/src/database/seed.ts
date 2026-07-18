@@ -11,7 +11,7 @@ import mongoose from "mongoose";
 
 dotenv.config();
 
-const seedDatabase = async () => {
+export const seedDatabase = async (exitOnComplete = false) => {
   try {
     const rawFrontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
     const seededFrontendUrl = rawFrontendUrl.startsWith("http") ? rawFrontendUrl : `https://${rawFrontendUrl}`;
@@ -542,11 +542,19 @@ const seedDatabase = async () => {
       logger.info("Education records already exist. Education seeding skipped.");
     }
 
-    process.exit(0);
+    if (exitOnComplete) {
+      process.exit(0);
+    }
   } catch (error: any) {
     logger.error("Seeding database failed:", { error: error.message });
-    process.exit(1);
+    if (exitOnComplete) {
+      process.exit(1);
+    } else {
+      throw error;
+    }
   }
 };
 
-seedDatabase();
+if (require.main === module) {
+  seedDatabase(true);
+}
