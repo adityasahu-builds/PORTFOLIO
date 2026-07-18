@@ -153,13 +153,13 @@ export function JourneyTimeline() {
     y: '50%', // All nodes exactly on the horizontal line
   });
 
-  // Mobile coordinates
+  // Mobile coordinates - Left-aligned for responsiveness
   const getMobileNodePosition = (idx: number) => ({
-    x: '50%', // All nodes exactly on the vertical line
-    y: 300 + idx * 300,
+    x: '40px', // Shifted left to make room for cards on the right
+    y: 100 + idx * 130, // Tighter vertical spacing on mobile
   });
 
-  const mobileTotalHeight = (milestones.length + 1) * 300;
+  const mobileTotalHeight = milestones.length * 130 + 80;
 
   return (
     <div ref={containerRef} className="relative w-full overflow-hidden bg-transparent py-20">
@@ -251,23 +251,23 @@ export function JourneyTimeline() {
 
             {/* MOBILE VIEW */}
             {isMobile && (
-              <div className="relative w-full max-w-[400px] mx-auto py-10" style={{ height: `${mobileTotalHeight}px` }}>
+              <div className="relative w-full max-w-[400px] mx-auto py-10 px-4" style={{ height: `${mobileTotalHeight}px` }}>
                 {/* SVG Vertical Line */}
                 <svg 
                   className="absolute top-0 left-0 w-full h-full pointer-events-none drop-shadow-[0_0_15px_rgba(0,210,255,0.8)]" 
                   viewBox={`0 0 350 ${mobileTotalHeight}`}
                   preserveAspectRatio="none"
                 >
-                  {/* Background faint path */}
+                  {/* Background faint path (shifted to x=40) */}
                   <path
-                    d={`M 175 0 L 175 ${mobileTotalHeight}`}
+                    d={`M 40 0 L 40 ${mobileTotalHeight}`}
                     fill="none"
                     stroke="rgba(0, 162, 255, 0.1)"
                     strokeWidth="4"
                   />
                   <path
                     ref={svgMobileRef}
-                    d={`M 175 0 L 175 ${mobileTotalHeight}`}
+                    d={`M 40 0 L 40 ${mobileTotalHeight}`}
                     fill="none"
                     stroke="url(#neonGradientMobile)"
                     strokeWidth="6"
@@ -286,10 +286,9 @@ export function JourneyTimeline() {
                 {/* Nodes */}
                 {milestones.map((milestone, idx) => {
                   const pos = getMobileNodePosition(idx);
-                  const isLeft = idx % 2 === 0; // Cards alternate left/right to avoid overlap
                   return (
                     <div key={idx} className="absolute -translate-x-1/2 -translate-y-1/2 z-20" style={{ left: pos.x, top: pos.y }}>
-                      <MagneticNode milestone={milestone} isMobile isLeft={isLeft} index={idx} />
+                      <MagneticNode milestone={milestone} isMobile index={idx} />
                     </div>
                   );
                 })}
@@ -349,7 +348,7 @@ function MagneticNode({ milestone, isTop, isMobile, isLeft, index }: MagneticNod
   // Determine card positioning relative to the node
   let cardClasses = "absolute transition-all duration-500 ease-out pointer-events-none z-50 ";
   if (isMobile) {
-    cardClasses += isLeft ? "left-12 top-1/2 -translate-y-1/2 w-48 " : "right-12 top-1/2 -translate-y-1/2 w-48 text-right ";
+    cardClasses += "left-12 top-1/2 -translate-y-1/2 w-[240px] text-left ";
   } else {
     cardClasses += isTop ? "bottom-14 left-1/2 -translate-x-1/2 w-[220px] " : "top-14 left-1/2 -translate-x-1/2 w-[220px] ";
   }

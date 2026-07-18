@@ -154,14 +154,18 @@ export function Contact() {
       <div className="container-site relative z-10 flex-grow flex flex-col mb-10">
         {/* Section Intro */}
         <div ref={headerRef} className="flex flex-col items-center text-center mb-24">
-          <h2 className="text-3xl md:text-5xl lg:text-6xl font-bold font-display text-white mb-8 flex flex-wrap justify-center overflow-hidden perspective-[1000px]">
-            {"LET'S BUILD SOMETHING AMAZING".split("").map((char, i) => (
-              <span
-                key={i}
-                className={`split-char inline-block ${char === " " ? "w-4" : ""}`}
-                style={{ transformOrigin: "50% 100%" }}
-              >
-                {char}
+          <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold font-display text-white mb-8 flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4">
+            {"LET'S BUILD SOMETHING AMAZING".split(" ").map((word, wIdx) => (
+              <span key={wIdx} className="inline-block whitespace-nowrap mr-3 last:mr-0">
+                {word.split("").map((char, cIdx) => (
+                  <span
+                    key={cIdx}
+                    className={`split-char inline-block`}
+                    style={{ transformOrigin: "50% 100%" }}
+                  >
+                    {char}
+                  </span>
+                ))}
               </span>
             ))}
           </h2>
@@ -237,7 +241,7 @@ export function Contact() {
             </div>
 
             {/* Social Links Cards */}
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <a 
                 href={personalInfo?.socialLinks?.github || "#"} 
                 target="_blank" 

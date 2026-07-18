@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useMotionTemplate, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
+import { Menu, X } from "lucide-react";
 
 const HeroCanvas = dynamic(
   () => import("@/components/three/HeroCanvas").then((m) => m.HeroCanvas),
@@ -434,6 +435,7 @@ export function Hero() {
   const [activeNav, setActiveNav] = useState("Home");
   const [mounted, setMounted] = useState(false);
   const [windowWidth, setWindowWidth] = useState(1200);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Fetch dynamic personal information from API
   const { data: personalInfo } = useQuery({
@@ -700,7 +702,7 @@ export function Hero() {
           </div>
 
           {/* Nav Links with sliding underline */}
-          <nav aria-label="Main navigation">
+          <nav aria-label="Main navigation" className="hidden lg:block">
             <ul
               style={{
                 display: "flex",
@@ -750,7 +752,7 @@ export function Hero() {
           </nav>
 
           {/* CV Button */}
-          <div style={{ transform: "translateX(-10px)" }}>
+          <div className="hidden lg:block" style={{ transform: "translateX(-10px)" }}>
             <EliteButton href={personalInfo?.hero?.resumeUrl || "/Aditya_Sahu_CV.pdf"} download>
               <span>Download CV</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform duration-300">
@@ -760,7 +762,54 @@ export function Hero() {
               </svg>
             </EliteButton>
           </div>
+
+          {/* Mobile Menu Action Bar */}
+          <div className="flex lg:hidden items-center gap-4 mr-2">
+            <EliteButton href={personalInfo?.hero?.resumeUrl || "/Aditya_Sahu_CV.pdf"} download>
+              <span className="text-xs">CV</span>
+            </EliteButton>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="text-white hover:text-[#00d2ff] transition-colors p-2 rounded-lg bg-blue-950/20 border border-blue-500/20 shadow-[0_0_10px_rgba(0,162,255,0.1)] focus:outline-none"
+              aria-label="Toggle mobile menu"
+            >
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Menu Dropdown */}
+        <AnimatePresence>
+          {mobileMenuOpen && (
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{ opacity: 1, height: "auto" }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="w-full bg-[#030718]/95 border-t border-blue-500/25 backdrop-blur-2xl flex flex-col lg:hidden shadow-[0_15px_30px_rgba(0,0,0,0.8)] overflow-hidden"
+            >
+              <ul className="flex flex-col py-4 px-8 gap-4 list-none m-0">
+                {NAV_LINKS.map((link) => (
+                  <li key={link.label}>
+                    <a
+                      href={link.href}
+                      onClick={(e) => {
+                        setMobileMenuOpen(false);
+                        handleNavClick(link.href, link.label)(e);
+                      }}
+                      className="block py-2 text-sm font-semibold tracking-wider font-inter transition-all duration-300"
+                      style={{
+                        color: activeNav === link.label ? "#00d2ff" : "rgba(203, 213, 225, 0.7)",
+                      }}
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </header>
 
       {/* ─── MAIN HERO CONTENT ─────────────────────── */}
@@ -801,7 +850,7 @@ export function Hero() {
 
           {/* Name - Styled with split colors exactly like reference image */}
           <h1
-            className="whitespace-nowrap text-[2.2rem] sm:text-[2.6rem] md:text-[3.2rem] lg:text-[clamp(2.4rem,4.2vw,3.4rem)]"
+            className="whitespace-normal sm:whitespace-nowrap text-[2.2rem] sm:text-[2.6rem] md:text-[3.2rem] lg:text-[clamp(2.4rem,4.2vw,3.4rem)]"
             style={{
               fontWeight: 800,
               lineHeight: 1.1,

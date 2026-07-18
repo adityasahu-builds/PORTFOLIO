@@ -124,14 +124,18 @@ export function Projects() {
         ref={headerRef}
         className="container-site relative z-10 pt-32 pb-16 flex flex-col items-center text-center"
       >
-        <h2 className="text-5xl md:text-7xl font-bold font-display text-white mb-6 flex overflow-hidden perspective-[1000px]">
-          {"Featured Projects".split("").map((char, i) => (
-            <span
-              key={i}
-              className={`split-char inline-block ${char === " " ? "w-4" : ""}`}
-              style={{ transformOrigin: "50% 100%" }}
-            >
-              {char}
+        <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4">
+          {"Featured Projects".split(" ").map((word, wIdx) => (
+            <span key={wIdx} className="inline-block whitespace-nowrap mr-3 last:mr-0">
+              {word.split("").map((char, cIdx) => (
+                <span
+                  key={cIdx}
+                  className="split-char inline-block"
+                  style={{ transformOrigin: "50% 100%" }}
+                >
+                  {char}
+                </span>
+              ))}
             </span>
           ))}
         </h2>
