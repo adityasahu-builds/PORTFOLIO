@@ -48,15 +48,11 @@ class Database {
         serverSelectionTimeoutMS: 2000,
       });
 
-      // Auto-seed database if it is empty (like on a fresh Atlas cluster)
+      // Auto-seed database collections dynamically if they are empty
       try {
-        const { PersonalInfo } = await import("../modules/personal-info/personal-info.model");
-        const count = await PersonalInfo.countDocuments();
-        if (count === 0) {
-          logger.info("Database is empty. Running auto-seed...");
-          const { seedDatabase } = await import("./seed");
-          await seedDatabase(false);
-        }
+        logger.info("Checking database collections to run auto-seed if needed...");
+        const { seedDatabase } = await import("./seed");
+        await seedDatabase(false);
       } catch (seedErr: any) {
         logger.error("Auto-seeding primary database failed", { error: seedErr.message });
       }
