@@ -14,6 +14,9 @@ import apiRoutes from "./routes";
 // Initialize express app
 const app: Application = express();
 
+// Trust proxy for express-rate-limit and IP resolution on Render/reverse-proxies
+app.set("trust proxy", 1);
+
 // Security Middlewares
 app.use(helmet()); // Secure HTTP headers
 app.disable("x-powered-by"); // Hide Express signature

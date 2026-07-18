@@ -18,7 +18,8 @@ class EmailProvider {
       connectionTimeout: 5000, // 5 seconds
       greetingTimeout: 5000,
       socketTimeout: 5000,
-    });
+      family: 4, // Force IPv4 to prevent ENETUNREACH IPv6 issue on Render
+    } as any);
 
     this.verifyConnection();
   }
