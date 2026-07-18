@@ -707,7 +707,7 @@ export function Hero() {
               style={{
                 display: "flex",
                 alignItems: "center",
-                gap: "2.5rem",
+                gap: "clamp(1rem, 2.2vw, 2.5rem)",
                 listStyle: "none",
                 margin: 0,
                 padding: 0,
@@ -720,7 +720,7 @@ export function Hero() {
                     onClick={handleNavClick(link.href, link.label)}
                     style={{
                       position: "relative",
-                      fontSize: "0.875rem",
+                      fontSize: "clamp(0.75rem, 0.95vw, 0.85rem)",
                       fontWeight: 500,
                       color: activeNav === link.label ? "#00d2ff" : "rgba(203, 213, 225, 0.7)",
                       textDecoration: "none",

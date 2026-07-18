@@ -116,7 +116,7 @@ export function NavBar() {
 
         {/* Nav links & Audio Controller */}
         <div className="flex items-center gap-4 lg:gap-8">
-          <ul className="hidden md:flex items-center gap-8 list-none" role="list">
+          <ul className="hidden lg:flex items-center gap-8 list-none" role="list">
             {NAV_LINKS.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -126,7 +126,7 @@ export function NavBar() {
                     onClick={handleNavClick(link.href)}
                     className="text-section-label tracking-widest transition-colors duration-300 font-semibold"
                     style={{ 
-                      fontSize: "0.75rem",
+                      fontSize: "clamp(0.68rem, 0.9vw, 0.75rem)",
                       color: isActive ? "#c4b5fd" : "var(--text-muted)" 
                     }}
                     onMouseEnter={(e) => {
@@ -152,10 +152,10 @@ export function NavBar() {
             })}
           </ul>
           
-          <div className="border-l border-violet-500/15 pl-4 lg:pl-6 hidden md:block">
+          <div className="border-l border-violet-500/15 pl-4 lg:pl-6 hidden lg:block">
             <AudioController />
           </div>
-          <div className="block md:hidden">
+          <div className="block lg:hidden">
             <AudioController />
           </div>
         </div>
