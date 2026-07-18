@@ -348,7 +348,7 @@ function MagneticNode({ milestone, isTop, isMobile, isLeft, index }: MagneticNod
   // Determine card positioning relative to the node
   let cardClasses = "absolute transition-all duration-500 ease-out pointer-events-none z-50 ";
   if (isMobile) {
-    cardClasses += "left-12 top-1/2 -translate-y-1/2 w-[240px] text-left ";
+    cardClasses += "left-12 top-1/2 -translate-y-1/2 w-[calc(100vw-120px)] max-w-[240px] text-left ";
   } else {
     cardClasses += isTop ? "bottom-14 left-1/2 -translate-x-1/2 w-[220px] " : "top-14 left-1/2 -translate-x-1/2 w-[220px] ";
   }

@@ -694,7 +694,7 @@ export function Hero() {
               href="#"
               aria-label="Aditya Sahu — back to top"
               onClick={handleNavClick("#", "Home")}
-              className="flex items-center text-xl font-bold font-display select-none tracking-widest text-white"
+              className="flex items-center text-lg lg:text-xl font-bold font-display select-none tracking-widest text-white"
               style={{ textDecoration: "none" }}
             >
               A<span className="text-[#00d2ff] drop-shadow-[0_0_8px_rgba(0,162,255,0.4)]">S</span>
@@ -764,16 +764,16 @@ export function Hero() {
           </div>
 
           {/* Mobile Menu Action Bar */}
-          <div className="flex lg:hidden items-center gap-4 mr-2">
+          <div className="flex lg:hidden items-center gap-3 mr-2">
             <EliteButton href={personalInfo?.hero?.resumeUrl || "/Aditya_Sahu_CV.pdf"} download>
-              <span className="text-xs">CV</span>
+              <span className="text-[11px] font-semibold">CV</span>
             </EliteButton>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="text-white hover:text-[#00d2ff] transition-colors p-2 rounded-lg bg-blue-950/20 border border-blue-500/20 shadow-[0_0_10px_rgba(0,162,255,0.1)] focus:outline-none"
+              className="text-white hover:text-[#00d2ff] transition-colors p-1.5 rounded-lg bg-blue-950/20 border border-blue-500/20 shadow-[0_0_10px_rgba(0,162,255,0.1)] focus:outline-none"
               aria-label="Toggle mobile menu"
             >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              {mobileMenuOpen ? <X className="w-4 h-4" /> : <Menu className="w-4 h-4" />}
             </button>
           </div>
         </div>
@@ -941,7 +941,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="order-1 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-[260px] h-[320px] sm:w-[320px] sm:h-[400px] md:w-[380px] md:h-[480px] lg:w-[clamp(420px,42vw,570px)] lg:h-[clamp(570px,72vh,780px)] mt-4 lg:mt-0"
+          className="order-1 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-[75vw] max-w-[265px] sm:max-w-[320px] md:max-w-[380px] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-4 lg:mt-0"
         >
           {/* 3D-Tilting HTML Image Centerpiece Wrapper */}
           <motion.div

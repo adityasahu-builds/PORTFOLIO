@@ -115,8 +115,8 @@ export function NavBar() {
         </a>
 
         {/* Nav links & Audio Controller */}
-        <div style={{ display: "flex", alignItems: "center", gap: "2.5rem" }}>
-          <ul className="flex items-center gap-8 list-none" role="list">
+        <div className="flex items-center gap-4 lg:gap-8">
+          <ul className="hidden md:flex items-center gap-8 list-none" role="list">
             {NAV_LINKS.map((link) => {
               const isActive = activeSection === link.id;
               return (
@@ -152,7 +152,10 @@ export function NavBar() {
             })}
           </ul>
           
-          <div style={{ borderLeft: "1px solid var(--border-subtle)", paddingLeft: "1.5rem" }}>
+          <div className="border-l border-violet-500/15 pl-4 lg:pl-6 hidden md:block">
+            <AudioController />
+          </div>
+          <div className="block md:hidden">
             <AudioController />
           </div>
         </div>
