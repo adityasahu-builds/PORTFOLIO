@@ -218,28 +218,14 @@ export function About() {
                   className="absolute inset-[10%] rounded-full border border-dotted z-0"
                 />
                 <div className="w-full h-full flex items-center justify-center z-10 relative overflow-hidden rounded-full p-1">
-                  {personalInfo?.about?.portraitImage ? (
-                    <motion.img 
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      transition={{ duration: 0.5 }}
-                      src={personalInfo.about.portraitImage} 
-                      alt="Portrait" 
-                      className="w-full h-full object-cover rounded-full" 
-                    />
-                  ) : (
-                    <div className="text-center">
-                      <div 
-                        style={{ color: personalInfo?.about?.portraitAccentColor || "#00d2ff" }} 
-                        className="font-bold text-3xl mb-1"
-                      >
-                        {personalInfo?.about?.portraitTitle || initials}
-                      </div>
-                      <div className="text-blue-200/50 text-xs tracking-[0.2em] uppercase">
-                        {personalInfo?.about?.portraitSubtitle || "Portrait"}
-                      </div>
-                    </div>
-                  )}
+                  <motion.img 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ duration: 0.5 }}
+                    src={personalInfo?.about?.portraitImage || "/aditya.jpg"} 
+                    alt="Portrait" 
+                    className="w-full h-full object-cover rounded-full" 
+                  />
                 </div>
               </div>
               
