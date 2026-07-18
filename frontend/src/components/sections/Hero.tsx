@@ -884,7 +884,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-            className="flex gap-x-2 gap-y-2.5 sm:gap-4 lg:gap-8 mb-4 lg:mb-10 flex-wrap justify-start"
+            className="flex gap-x-3 gap-y-4 sm:gap-4 lg:gap-8 my-6 sm:my-8 lg:my-0 lg:mb-10 flex-wrap justify-start"
           >
             <EliteButton href={personalInfo?.hero?.ctaButtonUrl || "#projects"} onClick={handleNavClick(personalInfo?.hero?.ctaButtonUrl || "#projects", "Projects")} primary>
               <span>{personalInfo?.hero?.ctaButtonText || "View My Work"}</span>
@@ -906,7 +906,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
-            className="mt-4 sm:mt-6 lg:mt-10 flex flex-col items-start"
+            className="mt-6 sm:mt-8 lg:mt-10 mb-8 lg:mb-0 flex flex-col items-start"
           >
             <p
               className="flex items-center justify-start gap-3"
@@ -934,7 +934,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="order-2 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-full max-w-[190px] xs:max-w-[220px] sm:max-w-[280px] md:max-w-[340px] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-0 lg:mt-0"
+          className="order-2 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-[65%] sm:w-[70%] max-w-[190px] xs:max-w-[220px] sm:max-w-[280px] md:max-w-[340px] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-0 lg:mt-0"
         >
           {/* 3D-Tilting HTML Image Centerpiece Wrapper */}
           <motion.div
