@@ -15,9 +15,9 @@ class EmailProvider {
         user: config.smtp.user,
         pass: config.smtp.pass,
       },
-      connectionTimeout: 5000, // 5 seconds
-      greetingTimeout: 5000,
-      socketTimeout: 5000,
+      connectionTimeout: 15000, // 15 seconds
+      greetingTimeout: 15000,
+      socketTimeout: 15000,
       family: 4, // Force IPv4 to prevent ENETUNREACH IPv6 issue on Render
     } as any);
 
