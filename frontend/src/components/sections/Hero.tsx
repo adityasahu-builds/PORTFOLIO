@@ -679,14 +679,7 @@ export function Hero() {
         }}
       >
         <div
-          className="w-full max-w-[1560px] px-7 md:px-[53px] lg:px-[69px]"
-          style={{
-            margin: "0 auto",
-            height: "72px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
+          className="w-full max-w-[1560px] px-5 sm:px-7 md:px-[53px] lg:px-[69px] flex items-center justify-between h-[72px]"
         >
           {/* AS Monogram - Styled A (white) S (blue) */}
           <div style={{ transform: "translateX(10px)" }}>
@@ -814,7 +807,7 @@ export function Hero() {
 
       {/* ─── MAIN HERO CONTENT ─────────────────────── */}
       <div
-        className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 grid grid-cols-2 lg:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-6 lg:gap-8 pt-[72px] lg:pt-0"
+        className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-6 md:px-8 grid grid-cols-2 lg:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-6 lg:gap-8 pt-[72px] lg:pt-0"
       >
         {/* ── LEFT: Text Content ──────────────────── */}
         <motion.div
@@ -828,7 +821,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center justify-start gap-2 text-xs xs:text-sm lg:text-[1rem]"
+            className="flex items-center justify-start gap-1.5 text-[10px] xs:text-xs lg:text-[1rem]"
             style={{
               color: "rgba(203, 213, 225, 0.7)",
               fontFamily: "var(--font-inter, sans-serif)",
@@ -840,7 +833,7 @@ export function Hero() {
             <span
               style={{
                 display: "inline-block",
-                width: "28px",
+                width: "20px",
                 height: "2px",
                 background: "linear-gradient(90deg, #0055ff, #00d2ff)",
                 borderRadius: "999px",
@@ -850,7 +843,7 @@ export function Hero() {
 
           {/* Name - Styled with split colors exactly like reference image */}
           <h1
-            className="whitespace-normal sm:whitespace-nowrap text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-[clamp(2.4rem,4.2vw,3.4rem)]"
+            className="whitespace-normal sm:whitespace-nowrap text-lg xs:text-xl sm:text-3xl md:text-5xl lg:text-[clamp(2.4rem,4.2vw,3.4rem)]"
             style={{
               fontWeight: 800,
               lineHeight: 1.1,
@@ -864,8 +857,8 @@ export function Hero() {
             </span>
           </h1>
 
-          <div className="mb-2 lg:mb-4 min-h-[30px] flex items-center justify-start">
-            <span className="text-[#00d2ff] font-semibold text-[11px] xs:text-xs sm:text-base lg:text-lg drop-shadow-[0_0_12px_rgba(0,162,255,0.3)]">
+          <div className="mb-2 lg:mb-4 min-h-[26px] flex items-center justify-start">
+            <span className="text-[#00d2ff] font-semibold text-[10px] xs:text-[11px] sm:text-base lg:text-lg drop-shadow-[0_0_12px_rgba(0,162,255,0.3)]">
               {personalInfo?.hero?.professionalTitle || "Full Stack Developer & AI/ML Engineer"}
             </span>
           </div>
@@ -875,7 +868,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-            className="text-[11px] xs:text-xs sm:text-sm lg:text-[0.95rem] leading-relaxed lg:leading-[1.7] mb-4 lg:mb-8"
+            className="text-[10px] xs:text-[11px] sm:text-sm lg:text-[0.95rem] leading-relaxed lg:leading-[1.7] mb-4 lg:mb-8"
             style={{
               color: "rgba(148, 163, 184, 0.85)",
               fontFamily: "var(--font-inter, sans-serif)",
