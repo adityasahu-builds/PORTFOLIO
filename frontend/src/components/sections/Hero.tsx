@@ -814,7 +814,7 @@ export function Hero() {
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
-          className="order-1 lg:order-1 flex flex-col gap-0 z-10 w-full max-w-[520px] mx-auto lg:mx-0 text-left items-start pl-6 sm:pl-0 -translate-y-8 lg:translate-y-0 lg:translate-x-[60px]"
+          className="order-1 lg:order-1 flex flex-col gap-0 z-10 w-full max-w-[520px] mx-auto lg:mx-0 text-left items-start pl-11 sm:pl-0 -translate-y-8 lg:translate-y-0 lg:translate-x-[60px]"
         >
           {/* Hi, I'm */}
           <motion.p
