@@ -19,9 +19,31 @@ app.use(helmet()); // Secure HTTP headers
 app.disable("x-powered-by"); // Hide Express signature
 
 // CORS Configuration
+const allowedOrigins = [
+  config.frontendUrl,
+  "http://localhost:3000",
+  "http://127.0.0.1:3000",
+].filter(Boolean);
+
 app.use(
   cors({
-    origin: config.frontendUrl || "*", // Fallback to * if not set (for dev), but should be restricted in prod
+    origin: (origin, callback) => {
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
+
+      const isAllowed = allowedOrigins.some((allowed) => {
+        return (
+          origin === allowed ||
+          origin.replace(/^https?:\/\//, "") === allowed.replace(/^https?:\/\//, "")
+        );
+      });
+
+      if (isAllowed) {
+        callback(null, true);
+      } else {
+        callback(new Error(`Origin ${origin} not allowed by CORS`));
+      }
+    },
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],

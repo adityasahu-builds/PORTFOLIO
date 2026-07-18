@@ -13,6 +13,8 @@ dotenv.config();
 
 const seedDatabase = async () => {
   try {
+    const rawFrontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+    const seededFrontendUrl = rawFrontendUrl.startsWith("http") ? rawFrontendUrl : `https://${rawFrontendUrl}`;
     // Connect to database
     await dbConnection.connect();
 
@@ -79,7 +81,7 @@ const seedDatabase = async () => {
         socialLinks: {
           github: "https://github.com/adityasahu",
           linkedin: "https://linkedin.com/in/adityasahu",
-          portfolio: "http://localhost:3000",
+          portfolio: seededFrontendUrl,
           resume: "",
           twitter: "",
           instagram: "https://instagram.com/adityasahu",
@@ -156,7 +158,7 @@ const seedDatabase = async () => {
             "A highly responsive React + Next.js developer portfolio engineered using advanced WebGL 3D canvas and dynamic GSAP scroll triggers for rich interactivity.",
           techStack: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "GSAP"],
           gitHubUrl: "https://github.com/adityasahu/portfolio",
-          liveUrl: "http://localhost:3000",
+          liveUrl: seededFrontendUrl,
           thumbnail: "",
           galleryImages: [],
           featured: true,

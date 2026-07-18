@@ -90,6 +90,9 @@ class Database {
             const { Education } = await import("../modules/education/education.model");
             const { PersonalInfo } = await import("../modules/personal-info/personal-info.model");
 
+            const rawFrontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+            const seededFrontendUrl = rawFrontendUrl.startsWith("http") ? rawFrontendUrl : `https://${rawFrontendUrl}`;
+
             const personalInfoCount = await PersonalInfo.countDocuments();
             if (personalInfoCount === 0) {
               const defaultInfo = new PersonalInfo({
@@ -147,7 +150,7 @@ class Database {
                 socialLinks: {
                   github: "https://github.com/adityasahu",
                   linkedin: "https://linkedin.com/in/adityasahu",
-                  portfolio: "http://localhost:3000",
+                  portfolio: seededFrontendUrl,
                   resume: "",
                   twitter: "",
                   instagram: "https://instagram.com/adityasahu",
@@ -214,7 +217,7 @@ class Database {
                     "GSAP",
                   ],
                   gitHubUrl: "https://github.com/adityasahu/portfolio",
-                  liveUrl: "http://localhost:3000",
+                  liveUrl: seededFrontendUrl,
                   featured: true,
                   displayOrder: 1,
                   status: "Currently Building",

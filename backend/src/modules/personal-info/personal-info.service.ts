@@ -11,6 +11,9 @@ export class PersonalInfoService {
     let info = await PersonalInfo.findOne();
     if (!info) {
       logger.info("No personal info document found. Creating default document automatically...");
+      const rawFrontendUrl = process.env.FRONTEND_URL || "http://localhost:3000";
+      const seededFrontendUrl = rawFrontendUrl.startsWith("http") ? rawFrontendUrl : `https://${rawFrontendUrl}`;
+
       info = new PersonalInfo({
         hero: {
           fullName: "Aditya Sahu",
@@ -66,7 +69,7 @@ export class PersonalInfoService {
         socialLinks: {
           github: "https://github.com/adityasahu",
           linkedin: "https://linkedin.com/in/adityasahu",
-          portfolio: "http://localhost:3000",
+          portfolio: seededFrontendUrl,
           resume: "",
           twitter: "",
           instagram: "https://instagram.com/adityasahu",
