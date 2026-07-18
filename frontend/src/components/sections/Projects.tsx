@@ -179,15 +179,9 @@ export function Projects() {
             <p className="text-slate-500 font-mono text-sm uppercase tracking-widest">No featured projects found</p>
           </div>
         ) : (
-          projects.map((project: DBProject, index: number) => {
-            // Override the thumbnail for the Portfolio project as requested
-            const displayProject = { ...project };
-            if (displayProject.title === "Portfolio Website" || displayProject.slug === "portfolio-website") {
-              displayProject.thumbnail = "/hero-card.png";
-            }
-            
-            return <ProjectShowcaseCard key={project._id} project={displayProject} index={index} />;
-          })
+          projects.map((project: DBProject, index: number) => (
+            <ProjectShowcaseCard key={project._id} project={project} index={index} />
+          ))
         )}
       </div>
     </section>
