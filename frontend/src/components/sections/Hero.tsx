@@ -938,7 +938,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="order-2 md:order-2 relative z-10 mx-auto md:mx-0 flex items-center justify-center pointer-events-auto md:translate-x-[45px] w-full max-w-[320px] xs:max-w-[340px] sm:max-w-[380px] md:max-w-none md:w-[clamp(420px,42vw,570px)] aspect-[13/16] md:aspect-auto md:h-[clamp(570px,72vh,780px)] mt-2 md:mt-0"
+          className="order-2 md:order-2 relative z-10 mx-auto md:mx-0 flex items-center justify-center pointer-events-auto md:translate-x-[45px] w-full max-w-[320px] xs:max-w-[340px] sm:max-w-[380px] md:max-w-none md:w-[clamp(407px,40.7vw,553px)] aspect-[13/16] md:aspect-auto md:h-[clamp(553px,69.8vh,757px)] mt-2 md:mt-0"
         >
           {/* 3D-Tilting HTML Image Centerpiece Wrapper */}
           <motion.div

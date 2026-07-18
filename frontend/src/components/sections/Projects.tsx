@@ -125,8 +125,8 @@ export function Projects() {
         className="container-site relative z-10 pt-32 pb-16 flex flex-col items-center text-center"
       >
         <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4">
-          {"Featured Projects".split(" ").map((word, wIdx) => (
-            <span key={wIdx} className="inline-block whitespace-nowrap mr-[0.4em] last:mr-0">
+          {"Featured Projects".split(" ").map((word, wIdx, arr) => (
+            <span key={wIdx} className="inline-block whitespace-nowrap">
               {word.split("").map((char, cIdx) => (
                 <span
                   key={cIdx}
@@ -136,6 +136,9 @@ export function Projects() {
                   {char}
                 </span>
               ))}
+              {wIdx !== arr.length - 1 && (
+                <span className="inline-block">&nbsp;</span>
+              )}
             </span>
           ))}
         </h2>
