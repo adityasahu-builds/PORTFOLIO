@@ -886,12 +886,14 @@ export function Hero() {
             transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
             className="flex gap-x-3 gap-y-4 sm:gap-4 lg:gap-8 my-6 sm:my-8 lg:my-0 lg:mb-10 flex-wrap justify-start"
           >
-            <EliteButton href={personalInfo?.hero?.ctaButtonUrl || "#projects"} onClick={handleNavClick(personalInfo?.hero?.ctaButtonUrl || "#projects", "Projects")} primary>
-              <span>{personalInfo?.hero?.ctaButtonText || "View My Work"}</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300">
-                <path d="M7 17L17 7M7 7h10v10" />
-              </svg>
-            </EliteButton>
+            <div className="hidden sm:block">
+              <EliteButton href={personalInfo?.hero?.ctaButtonUrl || "#projects"} onClick={handleNavClick(personalInfo?.hero?.ctaButtonUrl || "#projects", "Projects")} primary>
+                <span>{personalInfo?.hero?.ctaButtonText || "View My Work"}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-0.5 transition-transform duration-300">
+                  <path d="M7 17L17 7M7 7h10v10" />
+                </svg>
+              </EliteButton>
+            </div>
 
             <EliteButton href="#contact" onClick={handleNavClick("#contact", "Contact")}>
               <span>Contact Me</span>
@@ -924,7 +926,9 @@ export function Hero() {
             </p>
             <div className="flex gap-2.5">
               {socialLinksToRender.map((s) => (
-                <SocialLink key={s.id} href={s.href} label={s.label} icon={s.icon} />
+                <div key={s.id} className={(s.id.toLowerCase() === 'portfolio' || s.id.toLowerCase() === 'email') ? 'hidden sm:block' : ''}>
+                  <SocialLink href={s.href} label={s.label} icon={s.icon} />
+                </div>
               ))}
             </div>
           </motion.div>
