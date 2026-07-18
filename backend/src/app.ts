@@ -32,9 +32,11 @@ app.use(
       if (!origin) return callback(null, true);
 
       const isAllowed = allowedOrigins.some((allowed) => {
+        const cleanOrigin = origin.replace(/^https?:\/\//, "");
+        const cleanAllowed = allowed.replace(/^https?:\/\//, "");
         return (
-          origin === allowed ||
-          origin.replace(/^https?:\/\//, "") === allowed.replace(/^https?:\/\//, "")
+          cleanOrigin === cleanAllowed ||
+          (cleanOrigin.includes("adityasahu") && cleanOrigin.endsWith(".vercel.app"))
         );
       });
 
