@@ -807,21 +807,21 @@ export function Hero() {
 
       {/* ─── MAIN HERO CONTENT ─────────────────────── */}
       <div
-        className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-6 md:px-8 grid grid-cols-[1.25fr_0.75fr] lg:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-6 lg:gap-8 pt-[72px] lg:pt-0"
+        className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-6 md:px-8 grid grid-cols-[1.1fr_0.9fr] lg:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-6 lg:gap-8 pt-[72px] lg:pt-0"
       >
         {/* ── LEFT: Text Content ──────────────────── */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
-          className="order-1 lg:order-1 flex flex-col gap-0 z-10 w-full max-w-[520px] mx-auto lg:mx-0 text-left items-start pl-5 sm:pl-0 -translate-y-8 lg:translate-y-0 lg:translate-x-[60px]"
+          className="order-1 lg:order-1 flex flex-col gap-0 z-10 w-full max-w-[520px] mx-auto lg:mx-0 text-left items-start pl-8 sm:pl-0 -translate-y-8 lg:translate-y-0 lg:translate-x-[60px]"
         >
           {/* Hi, I'm */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center justify-start gap-1.5 text-[10px] xs:text-xs lg:text-[1rem]"
+            className="flex items-center justify-start gap-1.5 text-[9px] xs:text-xs lg:text-[1rem]"
             style={{
               color: "rgba(203, 213, 225, 0.7)",
               fontFamily: "var(--font-inter, sans-serif)",
@@ -843,7 +843,7 @@ export function Hero() {
 
           {/* Name - Styled with split colors exactly like reference image */}
           <h1
-            className="whitespace-normal sm:whitespace-nowrap text-lg xs:text-xl sm:text-3xl md:text-5xl lg:text-[clamp(2.4rem,4.2vw,3.4rem)]"
+            className="whitespace-normal sm:whitespace-nowrap text-[15px] xs:text-lg sm:text-3xl md:text-5xl lg:text-[clamp(2.4rem,4.2vw,3.4rem)]"
             style={{
               fontWeight: 800,
               lineHeight: 1.1,
@@ -858,7 +858,7 @@ export function Hero() {
           </h1>
 
           <div className="mb-2 lg:mb-4 min-h-[26px] flex items-center justify-start">
-            <span className="text-[#00d2ff] font-semibold text-[10px] xs:text-[11px] sm:text-base lg:text-lg drop-shadow-[0_0_12px_rgba(0,162,255,0.3)]">
+            <span className="text-[#00d2ff] font-semibold text-[9px] xs:text-[10px] sm:text-base lg:text-lg drop-shadow-[0_0_12px_rgba(0,162,255,0.3)]">
               {personalInfo?.hero?.professionalTitle || "Full Stack Developer & AI/ML Engineer"}
             </span>
           </div>
@@ -868,7 +868,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-            className="text-[10px] xs:text-[11px] sm:text-sm lg:text-[0.95rem] leading-relaxed lg:leading-[1.7] mb-4 lg:mb-8"
+            className="text-[9px] xs:text-[10px] sm:text-sm lg:text-[0.95rem] leading-relaxed lg:leading-[1.7] mb-4 lg:mb-8"
             style={{
               color: "rgba(148, 163, 184, 0.85)",
               fontFamily: "var(--font-inter, sans-serif)",
@@ -934,7 +934,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="order-2 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-full max-w-[110px] xs:max-w-[130px] sm:max-w-[280px] md:max-w-[340px] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-0 lg:mt-0 -translate-y-8 lg:translate-y-0"
+          className="order-2 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-full max-w-[155px] xs:max-w-[175px] sm:max-w-[280px] md:max-w-[340px] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-0 lg:mt-0 -translate-y-8 lg:translate-y-0"
         >
           {/* 3D-Tilting HTML Image Centerpiece Wrapper */}
           <motion.div
