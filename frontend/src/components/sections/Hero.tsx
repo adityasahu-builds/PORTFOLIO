@@ -235,7 +235,7 @@ function EliteButton({ href, onClick, primary, children, download }: EliteButton
       transition={{ type: "spring", stiffness: 120, damping: 18 }}
       whileTap={{ scale: 0.95 }}
       whileHover={{ scale: 1.04 }}
-      className="relative group inline-flex items-center justify-center gap-3 px-8 py-3.5 rounded-lg overflow-hidden font-bold text-[0.95rem] transition-all duration-300 select-none z-10 cursor-pointer"
+      className="relative group inline-flex items-center justify-center gap-1.5 sm:gap-3 px-3 py-2 sm:px-6 sm:py-3 lg:px-8 lg:py-3.5 rounded-lg overflow-hidden font-bold text-[11px] sm:text-sm lg:text-[0.95rem] transition-all duration-300 select-none z-10 cursor-pointer"
       style={{
         fontFamily: "var(--font-inter, sans-serif)",
         background: primary 
@@ -364,14 +364,14 @@ function SkillCard({ card, index }: SkillCardProps) {
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       whileHover={{ y: -4, x: -4 }}
-      className="relative w-full max-w-[280px] lg:max-w-none lg:w-[225px] p-3.5 rounded-xl border border-blue-500/15 bg-blue-950/5 backdrop-blur-md flex items-center justify-between gap-3 cursor-pointer overflow-hidden transition-all duration-300 hover:border-blue-500/50 hover:bg-blue-900/10 hover:shadow-[0_4px_25px_rgba(0,162,255,0.18)]"
+      className="relative w-full max-w-[280px] lg:max-w-none lg:w-[225px] p-3.5 rounded-xl border border-blue-500/35 lg:border-blue-500/15 bg-blue-950/45 lg:bg-blue-950/5 backdrop-blur-md flex items-center justify-between gap-3 cursor-pointer overflow-hidden transition-all duration-300 hover:border-blue-500/50 hover:bg-blue-900/10 hover:shadow-[0_4px_25px_rgba(0,162,255,0.18)]"
     >
       <div className="flex items-center gap-3">
         {/* Rotating icon on hover */}
         <motion.div
           animate={{ rotate: hovered ? 15 : 0 }}
           transition={{ type: "spring", stiffness: 200, damping: 12 }}
-          className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500/40 to-indigo-500/40 border border-blue-500/30 flex items-center justify-center text-blue-200"
+          className="w-9 h-9 rounded-lg bg-gradient-to-br from-blue-500/70 to-indigo-500/70 lg:from-blue-500/40 lg:to-indigo-500/40 border border-blue-500/50 lg:border-blue-500/30 flex items-center justify-center text-blue-100 lg:text-blue-200"
         >
           {card.icon}
         </motion.div>
@@ -814,21 +814,21 @@ export function Hero() {
 
       {/* ─── MAIN HERO CONTENT ─────────────────────── */}
       <div
-        className="relative z-10 w-full max-w-[1440px] mx-auto px-6 md:px-8 grid grid-cols-1 lg:grid-cols-[1fr_auto_1fr] items-center gap-8 lg:gap-8 pt-[72px] lg:pt-0"
+        className="relative z-10 w-full max-w-[1440px] mx-auto px-4 sm:px-6 md:px-8 grid grid-cols-2 lg:grid-cols-[1fr_auto_1fr] items-center gap-4 sm:gap-6 lg:gap-8 pt-[72px] lg:pt-0"
       >
         {/* ── LEFT: Text Content ──────────────────── */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
-          className="order-2 lg:order-1 flex flex-col gap-0 z-10 w-full max-w-[520px] mx-auto lg:mx-0 text-center lg:text-left items-center lg:items-start lg:translate-x-[60px]"
+          className="order-1 lg:order-1 flex flex-col gap-0 z-10 w-full max-w-[520px] mx-auto lg:mx-0 text-left items-start lg:translate-x-[60px]"
         >
           {/* Hi, I'm */}
           <motion.p
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.4, duration: 0.6 }}
-            className="flex items-center justify-center lg:justify-start gap-2 text-base lg:text-[1rem]"
+            className="flex items-center justify-start gap-2 text-xs xs:text-sm lg:text-[1rem]"
             style={{
               color: "rgba(203, 213, 225, 0.7)",
               fontFamily: "var(--font-inter, sans-serif)",
@@ -850,7 +850,7 @@ export function Hero() {
 
           {/* Name - Styled with split colors exactly like reference image */}
           <h1
-            className="whitespace-normal sm:whitespace-nowrap text-[2.2rem] sm:text-[2.6rem] md:text-[3.2rem] lg:text-[clamp(2.4rem,4.2vw,3.4rem)]"
+            className="whitespace-normal sm:whitespace-nowrap text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-[clamp(2.4rem,4.2vw,3.4rem)]"
             style={{
               fontWeight: 800,
               lineHeight: 1.1,
@@ -864,8 +864,8 @@ export function Hero() {
             </span>
           </h1>
 
-          <div className="mb-3 lg:mb-4 min-h-[36px] flex items-center justify-center lg:justify-start">
-            <span className="text-[#00d2ff] font-semibold text-sm sm:text-base lg:text-lg drop-shadow-[0_0_12px_rgba(0,162,255,0.3)]">
+          <div className="mb-2 lg:mb-4 min-h-[30px] flex items-center justify-start">
+            <span className="text-[#00d2ff] font-semibold text-[11px] xs:text-xs sm:text-base lg:text-lg drop-shadow-[0_0_12px_rgba(0,162,255,0.3)]">
               {personalInfo?.hero?.professionalTitle || "Full Stack Developer & AI/ML Engineer"}
             </span>
           </div>
@@ -875,11 +875,11 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.5, ease: "easeOut" }}
-            className="text-sm lg:text-[0.95rem] mx-auto lg:mx-0 leading-relaxed lg:leading-[1.7] mb-6 lg:mb-8"
+            className="text-[11px] xs:text-xs sm:text-sm lg:text-[0.95rem] leading-relaxed lg:leading-[1.7] mb-4 lg:mb-8"
             style={{
               color: "rgba(148, 163, 184, 0.85)",
               fontFamily: "var(--font-inter, sans-serif)",
-              maxWidth: "350px",
+              maxWidth: "95%",
               fontWeight: 400,
             }}
           >
@@ -891,7 +891,7 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6, ease: "easeOut" }}
-            className="flex gap-4 lg:gap-8 mb-6 lg:mb-10 flex-wrap justify-center lg:justify-start"
+            className="flex gap-2 sm:gap-4 lg:gap-8 mb-4 lg:mb-10 flex-wrap justify-start"
           >
             <EliteButton href={personalInfo?.hero?.ctaButtonUrl || "#projects"} onClick={handleNavClick(personalInfo?.hero?.ctaButtonUrl || "#projects", "Projects")} primary>
               <span>{personalInfo?.hero?.ctaButtonText || "View My Work"}</span>
@@ -913,10 +913,10 @@ export function Hero() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.7, ease: "easeOut" }}
-            className="mt-2 lg:mt-10 flex flex-col items-center lg:items-start"
+            className="mt-2 lg:mt-10 flex flex-col items-start"
           >
             <p
-              className="flex items-center justify-center lg:justify-start gap-3"
+              className="flex items-center justify-start gap-3"
               style={{
                 fontSize: "0.75rem",
                 color: "rgba(148, 163, 184, 0.5)",
@@ -941,7 +941,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="order-1 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-[70vw] sm:w-[55vw] md:w-[45vw] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-4 lg:mt-0"
+          className="order-2 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-full max-w-[185px] sm:max-w-[280px] md:max-w-[340px] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-0 lg:mt-0"
         >
           {/* 3D-Tilting HTML Image Centerpiece Wrapper */}
           <motion.div
@@ -979,7 +979,7 @@ export function Hero() {
 
         {/* ── RIGHT: Skill Cards stacked vertically ──── */}
         <div
-          className="order-3 flex flex-col sm:grid sm:grid-cols-2 lg:flex lg:flex-col gap-3 lg:gap-[0.9rem] z-10 items-center lg:items-end w-full max-w-[320px] sm:max-w-[500px] mx-auto lg:max-w-none lg:mx-0 lg:translate-x-[50px] pb-24 lg:pb-0"
+          className="order-3 col-span-2 lg:col-span-1 flex flex-col sm:grid sm:grid-cols-2 lg:flex lg:flex-col gap-3 lg:gap-[0.9rem] z-10 items-center lg:items-end w-full max-w-[320px] sm:max-w-[500px] mx-auto lg:max-w-none lg:mx-0 lg:translate-x-[50px] pb-24 lg:pb-0"
         >
           {(() => {
             // Dynamically resolve skill highlight cards from MongoDB categories
