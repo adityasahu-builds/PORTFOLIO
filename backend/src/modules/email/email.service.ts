@@ -13,16 +13,19 @@ export class EmailService {
     try {
       const htmlContent = getContactNotificationTemplate(data);
 
-      await emailProvider.sendMail({
+      const success = await emailProvider.sendMail({
         to: config.contactReceiverEmail,
         subject: EMAIL_SUBJECTS.NEW_CONTACT_SUBMISSION,
         html: htmlContent,
         replyTo: data.email, // Allows the owner to hit "Reply" and send directly to the user
       });
+      if (!success) {
+        throw new Error("Failed to deliver mail through SMTP provider.");
+      }
     } catch (error) {
       const errMessage = error instanceof Error ? error.message : "Unknown error";
       logger.error("Error in EmailService.sendContactNotification", { error: errMessage });
-      // Purposefully swallowing the error so the HTTP request doesn't fail
+      throw new Error(`SMTP Notification Error: ${errMessage}`);
     }
   }
 
@@ -33,15 +36,18 @@ export class EmailService {
     try {
       const htmlContent = getAutoReplyTemplate(data);
 
-      await emailProvider.sendMail({
+      const success = await emailProvider.sendMail({
         to: data.email,
         subject: EMAIL_SUBJECTS.CONTACT_AUTO_REPLY,
         html: htmlContent,
       });
+      if (!success) {
+        throw new Error("Failed to deliver auto-reply mail through SMTP provider.");
+      }
     } catch (error) {
       const errMessage = error instanceof Error ? error.message : "Unknown error";
       logger.error("Error in EmailService.sendAutoReply", { error: errMessage });
-      // Purposefully swallowing the error so the HTTP request doesn't fail
+      throw new Error(`SMTP AutoReply Error: ${errMessage}`);
     }
   }
 }
