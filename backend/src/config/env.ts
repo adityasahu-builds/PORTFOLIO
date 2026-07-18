@@ -11,13 +11,8 @@ interface Config {
   jwtExpiresIn: string;
   jwtRefreshSecret: string;
   jwtRefreshExpiresIn: string;
-  smtp: {
-    host: string;
-    port: number;
-    user: string;
-    pass: string;
-    from: string;
-  };
+  brevoApiKey: string;
+  emailFrom: string;
   contactReceiverEmail: string;
   cloudinary: {
     cloudName: string;
@@ -43,13 +38,8 @@ export const config: Config = {
   jwtExpiresIn: getEnvVar("JWT_EXPIRES_IN", false) || "7d",
   jwtRefreshSecret: getEnvVar("JWT_REFRESH_SECRET"),
   jwtRefreshExpiresIn: getEnvVar("JWT_REFRESH_EXPIRES_IN", false) || "30d",
-  smtp: {
-    host: getEnvVar("SMTP_HOST"),
-    port: parseInt(getEnvVar("SMTP_PORT", false) || "587", 10),
-    user: getEnvVar("SMTP_USER"),
-    pass: getEnvVar("SMTP_PASS"),
-    from: getEnvVar("EMAIL_FROM"),
-  },
+  brevoApiKey: getEnvVar("BREVO_API_KEY", false),
+  emailFrom: getEnvVar("EMAIL_FROM", false) || "Aditya Portfolio <sender@example.com>",
   contactReceiverEmail: getEnvVar("CONTACT_RECEIVER_EMAIL"),
   cloudinary: {
     cloudName: getEnvVar("CLOUDINARY_CLOUD_NAME", false),

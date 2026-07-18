@@ -31,7 +31,6 @@
     "mongoose": "^9.7.4",
     "morgan": "^1.10.0",
     "multer": "^2.2.0",
-    "nodemailer": "^9.0.3",
     "sanitize-html": "^2.17.6",
     "uuid": "^10.0.0",
     "zod": "^3.25.76"
@@ -46,7 +45,6 @@
     "@types/morgan": "^1.9.9",
     "@types/multer": "^2.2.0",
     "@types/node": "^20.14.9",
-    "@types/nodemailer": "^8.0.1",
     "@types/sanitize-html": "^2.16.1",
     "@types/uuid": "^10.0.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",

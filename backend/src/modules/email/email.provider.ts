@@ -1,61 +1,81 @@
-import nodemailer from "nodemailer";
 import { config } from "../../config/env";
 import { logger } from "../../utils/logger";
 import { EmailOptions } from "./email.types";
 
+function parseEmailFrom(fromStr: string): { name: string; email: string } {
+  const match = fromStr.match(/^(?:"?([^"]*)"?\s)?<?([^>]+)>?$/);
+  if (match) {
+    return {
+      name: match[1]?.trim() || "Sender",
+      email: match[2]?.trim() || fromStr
+    };
+  }
+  return { name: "Sender", email: fromStr };
+}
+
 class EmailProvider {
-  private transporter: nodemailer.Transporter;
+  private apiKey: string;
+  private fromName: string;
+  private fromEmail: string;
 
   constructor() {
-    this.transporter = nodemailer.createTransport({
-      host: config.smtp.host,
-      port: config.smtp.port,
-      secure: config.smtp.port === 465, // true for 465, false for other ports
-      auth: {
-        user: config.smtp.user,
-        pass: config.smtp.pass,
-      },
-      connectionTimeout: 15000, // 15 seconds
-      greetingTimeout: 15000,
-      socketTimeout: 15000,
-      family: 4, // Force IPv4 to prevent ENETUNREACH IPv6 issue on Render
-    } as any);
+    this.apiKey = config.brevoApiKey;
+    const parsedFrom = parseEmailFrom(config.emailFrom);
+    this.fromName = parsedFrom.name;
+    this.fromEmail = parsedFrom.email;
 
-    this.verifyConnection();
-  }
-
-  private async verifyConnection() {
-    try {
-      await this.transporter.verify();
-      logger.info("SMTP connection established successfully.");
-    } catch (error) {
-      const errMessage = error instanceof Error ? error.message : "Unknown error";
-      logger.error("Failed to establish SMTP connection", { error: errMessage });
-      // We log but do NOT crash the server, as email should not break core functionality
+    if (!this.apiKey) {
+      logger.warn("BREVO_API_KEY is not defined. Email sending will run in MOCK mode.");
+    } else {
+      logger.info("Brevo API Email Provider initialized.");
     }
   }
 
   public async sendMail(options: EmailOptions): Promise<boolean> {
-    try {
-      logger.info(
-        `Queuing email to ${Array.isArray(options.to) ? options.to.join(", ") : options.to}`
-      );
+    const toEmails = Array.isArray(options.to) ? options.to : [options.to];
+    logger.info(`Queuing email via Brevo API to ${toEmails.join(", ")}`);
 
-      const mailOptions = {
-        from: config.smtp.from,
-        to: options.to,
+    if (!this.apiKey) {
+      logger.info("[Mock Send Email] - Brevo API key missing. Email details:", {
+        to: toEmails,
         subject: options.subject,
-        html: options.html,
-        text: options.text,
-        replyTo: options.replyTo,
-      };
+        html: options.html ? "(HTML Content present)" : "(No HTML)",
+      });
+      return true;
+    }
 
-      const info = await this.transporter.sendMail(mailOptions);
-      logger.info(`Email sent successfully: ${info.messageId}`);
+    try {
+      const response = await fetch("https://api.brevo.com/v3/smtp/email", {
+        method: "POST",
+        headers: {
+          "accept": "application/json",
+          "api-key": this.apiKey,
+          "content-type": "application/json"
+        },
+        body: JSON.stringify({
+          sender: {
+            name: this.fromName,
+            email: this.fromEmail
+          },
+          to: toEmails.map(email => ({ email })),
+          subject: options.subject,
+          htmlContent: options.html,
+          textContent: options.text || undefined,
+          replyTo: options.replyTo ? { email: options.replyTo } : undefined
+        })
+      });
+
+      if (!response.ok) {
+        const errorText = await response.text();
+        throw new Error(`Brevo API responded with status ${response.status}: ${errorText}`);
+      }
+
+      const responseData: any = await response.json();
+      logger.info(`Email sent successfully via Brevo: ${responseData.messageId}`);
       return true;
     } catch (error) {
       const errMessage = error instanceof Error ? error.message : "Unknown error";
-      logger.error("Failed to send email", { error: errMessage, subject: options.subject });
+      logger.error("Failed to send email via Brevo API", { error: errMessage, subject: options.subject });
       return false;
     }
   }
