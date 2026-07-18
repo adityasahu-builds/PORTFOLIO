@@ -807,14 +807,14 @@ export function Hero() {
 
       {/* ─── MAIN HERO CONTENT ─────────────────────── */}
       <div
-        className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-6 md:px-8 grid grid-cols-[0.8fr_1.2fr] lg:grid-cols-[1fr_auto_1fr] items-center gap-x-3 gap-y-8 xs:gap-y-10 sm:gap-6 lg:gap-8 pt-[76px] lg:pt-0"
+        className="relative z-10 w-full max-w-[1440px] mx-auto px-5 sm:px-6 md:px-8 grid grid-cols-[0.7fr_1.3fr] lg:grid-cols-[1fr_auto_1fr] items-center gap-x-3 gap-y-8 xs:gap-y-10 sm:gap-6 lg:gap-8 pt-[76px] lg:pt-0"
       >
         {/* ── LEFT: Text Content ──────────────────── */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: [0.25, 0.46, 0.45, 0.94], delay: 0.2 }}
-          className="order-1 lg:order-1 flex flex-col gap-0 z-10 w-full max-w-[520px] mx-auto lg:mx-0 text-left items-start pl-6 sm:pl-0 lg:translate-x-[60px]"
+          className="order-1 lg:order-1 flex flex-col gap-0 z-10 w-full max-w-[520px] mx-auto lg:mx-0 text-left items-start pl-3 sm:pl-0 lg:translate-x-[60px]"
         >
           {/* Hi, I'm */}
           <motion.p
@@ -934,7 +934,7 @@ export function Hero() {
           initial={{ opacity: 0, scale: 0.95, y: 25 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.15 }}
-          className="order-2 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-full max-w-[300px] xs:max-w-[320px] sm:max-w-[360px] md:max-w-[400px] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-0 lg:mt-0"
+          className="order-2 lg:order-2 relative z-10 mx-auto lg:mx-0 flex items-center justify-center pointer-events-auto lg:translate-x-[45px] w-full max-w-[280px] xs:max-w-[300px] sm:max-w-[340px] md:max-w-[380px] lg:w-[clamp(420px,42vw,570px)] aspect-[13/16] lg:aspect-auto lg:h-[clamp(570px,72vh,780px)] mt-0 lg:mt-0"
         >
           {/* 3D-Tilting HTML Image Centerpiece Wrapper */}
           <motion.div
