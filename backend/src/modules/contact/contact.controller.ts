@@ -15,26 +15,26 @@ export class ContactController {
       // 1. Save to MongoDB First
       const savedContact = await contactService.createContact(req.body);
 
-      // 2. Fire and forget emails (do not await, let them run in background to speed up API response,
-      // or await them but errors are caught inside emailService)
-      // Actually we will await them to ensure logs show up sequentially in tests,
-      // since emailService catches all errors it won't crash the request.
-
+      // 2. Fire and forget emails (run in the background so SMTP/network lag doesn't hang the API response)
       const ipAddress = req.ip || req.socket.remoteAddress;
       const userAgent = req.headers["user-agent"];
 
-      await emailService.sendContactNotification({
+      emailService.sendContactNotification({
         fullName: savedContact.fullName,
         email: savedContact.email,
         subject: savedContact.subject,
         message: savedContact.message,
         ipAddress,
         userAgent,
+      }).catch(err => {
+        // Swallowed/Logged inside service, but catch here for safety
       });
 
-      await emailService.sendAutoReply({
+      emailService.sendAutoReply({
         fullName: savedContact.fullName,
         email: savedContact.email,
+      }).catch(err => {
+        // Swallowed/Logged inside service, but catch here for safety
       });
 
       // 3. Return Success

@@ -15,6 +15,9 @@ class EmailProvider {
         user: config.smtp.user,
         pass: config.smtp.pass,
       },
+      connectionTimeout: 5000, // 5 seconds
+      greetingTimeout: 5000,
+      socketTimeout: 5000,
     });
 
     this.verifyConnection();
