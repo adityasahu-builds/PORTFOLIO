@@ -126,7 +126,7 @@ export function Projects() {
       >
         <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4">
           {"Featured Projects".split(" ").map((word, wIdx) => (
-            <span key={wIdx} className="inline-block whitespace-nowrap mr-3 last:mr-0">
+            <span key={wIdx} className="inline-block whitespace-nowrap mr-[0.4em] last:mr-0">
               {word.split("").map((char, cIdx) => (
                 <span
                   key={cIdx}

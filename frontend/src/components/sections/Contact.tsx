@@ -156,7 +156,7 @@ export function Contact() {
         <div ref={headerRef} className="flex flex-col items-center text-center mb-24">
           <h2 className="text-2xl sm:text-3xl md:text-5xl lg:text-6xl font-bold font-display text-white mb-8 flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4">
             {"LET'S BUILD SOMETHING AMAZING".split(" ").map((word, wIdx) => (
-              <span key={wIdx} className="inline-block whitespace-nowrap mr-3 last:mr-0">
+              <span key={wIdx} className="inline-block whitespace-nowrap mr-[0.4em] last:mr-0">
                 {word.split("").map((char, cIdx) => (
                   <span
                     key={cIdx}
