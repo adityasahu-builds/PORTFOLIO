@@ -746,7 +746,7 @@ export function Hero() {
 
           {/* CV Button */}
           <div className="hidden lg:block" style={{ transform: "translateX(-10px)" }}>
-            <EliteButton href={personalInfo?.hero?.resumeUrl || "/Aditya_Sahu_CV.pdf"} download>
+            <EliteButton href="/cv.png" download>
               <span>Download CV</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="w-3.5 h-3.5 group-hover:translate-y-0.5 transition-transform duration-300">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -758,7 +758,7 @@ export function Hero() {
 
           {/* Mobile Menu Action Bar */}
           <div className="flex lg:hidden items-center gap-3 mr-2">
-            <EliteButton href={personalInfo?.hero?.resumeUrl || "/Aditya_Sahu_CV.pdf"} download>
+            <EliteButton href="/cv.png" download>
               <span className="text-[11px] font-semibold">CV</span>
             </EliteButton>
             <button

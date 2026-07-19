@@ -50,12 +50,12 @@ export function Footer() {
     { icon: <GithubIcon />, href: personalInfo.socialLinks.github || "#" },
     { icon: <LinkedinIcon />, href: personalInfo.socialLinks.linkedin || "#" },
     { icon: <Mail className="w-4 h-4" />, href: personalInfo.contact.primaryEmail ? `mailto:${personalInfo.contact.primaryEmail}` : "#" },
-    { icon: <FileText className="w-4 h-4" />, href: personalInfo.hero.resumeUrl || "#" },
+    { icon: <FileText className="w-4 h-4" />, href: "/cv.png", download: "cv.png" },
   ] : [
     { icon: <GithubIcon />, href: "#" },
     { icon: <LinkedinIcon />, href: "#" },
     { icon: <Mail className="w-4 h-4" />, href: "#" },
-    { icon: <FileText className="w-4 h-4" />, href: "#" },
+    { icon: <FileText className="w-4 h-4" />, href: "/cv.png", download: "cv.png" },
   ];
 
   return (
@@ -111,6 +111,7 @@ export function Footer() {
                 <a
                   key={i}
                   href={social.href}
+                  download={social.download}
                   className="relative group w-12 h-12 rounded-full bg-white/[0.02] border border-white/[0.05] backdrop-blur-xl flex items-center justify-center text-slate-400 hover:text-white hover:border-[#00d2ff]/40 hover:bg-[#00d2ff]/10 hover:shadow-[0_15px_30px_rgba(0,210,255,0.15)] hover:-translate-y-2 transition-all duration-500 overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-[#00d2ff]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
