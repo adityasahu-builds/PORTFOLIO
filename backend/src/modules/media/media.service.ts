@@ -106,12 +106,16 @@ export class MediaService {
     }
 
     try {
-      // 1. Delete from Cloudinary
-      await deleteFromCloudinary(media.publicId);
+      // 1. Attempt to delete from Cloudinary
+      try {
+        await deleteFromCloudinary(media.publicId);
+      } catch (cloudinaryError: any) {
+        logger.warn(`Cloudinary deletion failed for publicId ${media.publicId}: ${cloudinaryError.message}. Proceeding to delete from database.`);
+      }
 
       // 2. Delete from database
       await Media.findByIdAndDelete(id);
-      logger.info(`Media deleted from DB and Cloudinary: ${media.publicId}`);
+      logger.info(`Media deleted from DB: ${media.publicId}`);
     } catch (error: any) {
       logger.error("Error in deleteMedia service:", { error: error.message });
       throw error;
