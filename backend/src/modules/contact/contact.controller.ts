@@ -4,6 +4,7 @@ import { CreateContactInput } from "./contact.schema";
 import { ApiResponse } from "../../utils/ApiResponse";
 import { emailService } from "../email/email.service";
 import { AppError } from "../../errors/AppError";
+import { logger } from "../../utils/logger";
 
 export class ContactController {
   public async submitContact(
@@ -15,31 +16,42 @@ export class ContactController {
       // 1. Save to MongoDB First
       const savedContact = await contactService.createContact(req.body);
 
-      // 2. Send emails synchronously (await both so any failure results in API failure)
-      const ipAddress = req.ip || req.socket.remoteAddress;
-      const userAgent = req.headers["user-agent"];
-
-      await emailService.sendContactNotification({
-        fullName: savedContact.fullName,
-        email: savedContact.email,
-        subject: savedContact.subject,
-        message: savedContact.message,
-        ipAddress,
-        userAgent,
-      });
-
-      await emailService.sendAutoReply({
-        fullName: savedContact.fullName,
-        email: savedContact.email,
-      });
-
-      // 3. Return Success
+      // 2. Return HTTP Response Immediately to user to ensure fast UX
       const response = new ApiResponse(201, "Message sent successfully.", {
         id: savedContact._id,
         createdAt: savedContact.createdAt,
       });
-
       res.status(201).json(response);
+
+      // 3. Dispatch emails asynchronously & concurrently in background
+      const ipAddress = req.ip || req.socket.remoteAddress;
+      const userAgent = req.headers["user-agent"];
+
+      Promise.allSettled([
+        emailService.sendContactNotification({
+          fullName: savedContact.fullName,
+          email: savedContact.email,
+          subject: savedContact.subject,
+          message: savedContact.message,
+          ipAddress,
+          userAgent,
+        }),
+        emailService.sendAutoReply({
+          fullName: savedContact.fullName,
+          email: savedContact.email,
+        }),
+      ]).then((results) => {
+        results.forEach((res, index) => {
+          const type = index === 0 ? "Notification Email" : "Auto-Reply Email";
+          if (res.status === "fulfilled") {
+            logger.info(`${type} dispatched successfully for contact ${savedContact._id}`);
+          } else {
+            logger.error(`Failed to send ${type} for contact ${savedContact._id}`, {
+              error: res.reason?.message || res.reason,
+            });
+          }
+        });
+      });
     } catch (error) {
       next(error);
     }

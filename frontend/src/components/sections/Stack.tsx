@@ -26,7 +26,7 @@ export function Stack() {
   const svgRef = useRef<SVGSVGElement>(null);
 
   // Fetch active skills from backend
-  const { data: skills = [], isLoading } = useQuery({
+  const { data: skills = [], isLoading, isError, refetch } = useQuery({
     queryKey: ["skills-active"],
     queryFn: async () => {
       const res = await api.get("/skills?status=Active");
@@ -133,6 +133,16 @@ export function Stack() {
         {isLoading ? (
           <div className="absolute inset-0 flex items-center justify-center">
             <span className="text-xs font-mono uppercase tracking-widest text-slate-500 animate-pulse">Loading Constellation...</span>
+          </div>
+        ) : isError ? (
+          <div className="absolute inset-0 flex flex-col items-center justify-center gap-4">
+            <span className="text-xs font-mono uppercase tracking-widest text-red-400">Failed to load tech constellation</span>
+            <button
+              onClick={() => refetch()}
+              className="px-4 py-2 text-xs font-mono uppercase tracking-widest border border-red-500/20 text-red-400 bg-red-950/10 hover:bg-red-950/20 hover:border-red-400 transition-all rounded"
+            >
+              Retry Connection
+            </button>
           </div>
         ) : sortedSkills.length === 0 ? (
           <div className="absolute inset-0 flex items-center justify-center">

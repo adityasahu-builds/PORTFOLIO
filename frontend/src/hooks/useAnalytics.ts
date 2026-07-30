@@ -39,8 +39,11 @@ export function useAnalytics() {
         }
       } else {
         try {
-          // Fetch from a free public API
-          const geoRes = await fetch("https://ipapi.co/json/");
+          // Fetch from a free public API with 3s timeout to prevent hanging
+          const controller = new AbortController();
+          const timeoutId = setTimeout(() => controller.abort(), 3000);
+          const geoRes = await fetch("https://ipapi.co/json/", { signal: controller.signal });
+          clearTimeout(timeoutId);
           if (geoRes.ok) {
             const geoJson = await geoRes.json();
             geoData = {

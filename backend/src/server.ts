@@ -10,16 +10,18 @@ let server: Server;
 // Start Server
 const startServer = async () => {
   try {
-    // 1. Connect to Database First
-    await dbConnection.connect();
-
-    // 2. Start Express Server
+    // 1. Start Express Server First to bind TCP port immediately for Render
     server = app.listen(PORT, () => {
       logger.info(`Server is running in ${config.nodeEnv} mode on port ${PORT}`);
       logger.info(`Health check available at http://localhost:${PORT}/api/v1/health`);
     });
+
+    // 2. Connect to Database asynchronously in background
+    dbConnection.connect().catch((dbErr) => {
+      logger.error("Initial database connection attempt encounter error", { error: dbErr });
+    });
   } catch (error) {
-    logger.error("Failed to start server due to database connection issue", { error });
+    logger.error("Failed to start HTTP server", { error });
     process.exit(1);
   }
 };

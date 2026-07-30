@@ -12,20 +12,21 @@ export class EmailService {
   public async sendContactNotification(data: ContactNotificationOptions): Promise<void> {
     try {
       const htmlContent = getContactNotificationTemplate(data);
+      const recipient = config.contactReceiverEmail || data.email;
 
       const success = await emailProvider.sendMail({
-        to: config.contactReceiverEmail,
+        to: recipient,
         subject: EMAIL_SUBJECTS.NEW_CONTACT_SUBMISSION,
         html: htmlContent,
         replyTo: data.email, // Allows the owner to hit "Reply" and send directly to the user
       });
       if (!success) {
-        throw new Error("Failed to deliver mail through SMTP provider.");
+        throw new Error("Failed to deliver notification mail through Brevo provider.");
       }
     } catch (error) {
       const errMessage = error instanceof Error ? error.message : "Unknown error";
       logger.error("Error in EmailService.sendContactNotification", { error: errMessage });
-      throw new Error(`SMTP Notification Error: ${errMessage}`);
+      throw new Error(`Notification Error: ${errMessage}`);
     }
   }
 
@@ -42,12 +43,12 @@ export class EmailService {
         html: htmlContent,
       });
       if (!success) {
-        throw new Error("Failed to deliver auto-reply mail through SMTP provider.");
+        throw new Error("Failed to deliver auto-reply mail through Brevo provider.");
       }
     } catch (error) {
       const errMessage = error instanceof Error ? error.message : "Unknown error";
       logger.error("Error in EmailService.sendAutoReply", { error: errMessage });
-      throw new Error(`SMTP AutoReply Error: ${errMessage}`);
+      throw new Error(`AutoReply Error: ${errMessage}`);
     }
   }
 }

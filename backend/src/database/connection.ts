@@ -2,8 +2,8 @@ import mongoose from "mongoose";
 import { config } from "../config/env";
 import { logger } from "../utils/logger";
 
-const MAX_RETRIES = 1;
-const RETRY_INTERVAL = 1000; // 1 second
+const MAX_RETRIES = 5;
+const RETRY_INTERVAL = 1000; // 1 second base for exponential backoff
 
 class Database {
   private retryCount = 0;
@@ -33,19 +33,23 @@ class Database {
 
   public async connect(): Promise<void> {
     try {
-      if (mongoose.connection.readyState === 1) {
-        logger.info("Database already connected");
+      if (mongoose.connection.readyState === 1 || mongoose.connection.readyState === 2) {
+        logger.info("Database connection already active or connecting");
         return;
       }
 
       if (config.databaseUrl.includes("<username>")) {
-        logger.warn("Database connection skipped due to placeholder URL (Phase 2).");
+        logger.warn("Database connection skipped due to placeholder URL.");
         return;
       }
 
       logger.info(`Attempting database connection to ${config.databaseUrl.substring(0, 30)}...`);
       await mongoose.connect(config.databaseUrl, {
-        serverSelectionTimeoutMS: 2000,
+        serverSelectionTimeoutMS: 10000, // 10s selection timeout suitable for Render cold start & Atlas
+        connectTimeoutMS: 10000,
+        maxPoolSize: 10, // Maintain up to 10 socket connections
+        minPoolSize: 2,  // Keep at least 2 connections ready in pool
+        socketTimeoutMS: 45000,
       });
 
       // Auto-seed database collections dynamically if they are empty
@@ -57,26 +61,30 @@ class Database {
         logger.error("Auto-seeding primary database failed", { error: seedErr.message });
       }
     } catch (error: unknown) {
-      this.handleConnectionError(error);
+      await this.handleConnectionError(error);
     }
   }
 
-  private handleConnectionError(error: unknown) {
+  private async handleConnectionError(error: unknown) {
     const errMessage = error instanceof Error ? error.message : "Unknown error";
     logger.error("Failed to connect to database", { error: errMessage });
 
     if (this.retryCount < MAX_RETRIES) {
       this.retryCount++;
-      const timeout = RETRY_INTERVAL * Math.pow(2, this.retryCount - 1); // Exponential backoff
+      const timeout = RETRY_INTERVAL * Math.pow(2, this.retryCount - 1); // Exponential backoff (1s, 2s, 4s, 8s, 16s)
       logger.info(
         `Retrying database connection in ${timeout / 1000} seconds... (Attempt ${this.retryCount} of ${MAX_RETRIES})`
       );
 
-      setTimeout(() => {
-        this.connect();
-      }, timeout);
+      await new Promise((res) => setTimeout(res, timeout));
+      return this.connect();
     } else {
       logger.error("Max database connection retries reached for primary Database URL.");
+      if (config.nodeEnv === "production") {
+        logger.error("In production mode: memory server fallback is disabled. Process maintaining connection listeners.");
+        return;
+      }
+
       logger.info(
         "Automatically falling back to in-memory database for testing and development..."
       );

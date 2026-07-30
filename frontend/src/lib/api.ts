@@ -5,6 +5,7 @@ const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/a
 // Primary API Client
 export const api = axios.create({
   baseURL: API_BASE_URL,
+  timeout: 15000, // 15s timeout to prevent infinite pending promises during cold starts
   withCredentials: true, // Crucial for reading/writing secure httpOnly cookies
   headers: {
     "Content-Type": "application/json",
@@ -74,7 +75,7 @@ api.interceptors.response.use(
       const refreshResponse = await axios.post(
         `${API_BASE_URL}/auth/refresh`,
         {},
-        { withCredentials: true }
+        { withCredentials: true, timeout: 10000 }
       );
 
       const newAccessToken = refreshResponse.data?.data?.accessToken;
@@ -93,11 +94,14 @@ api.interceptors.response.use(
       isRefreshing = false;
       processQueue(refreshError, null);
 
-      // Refresh failed -> clear session and redirect client
+      // Refresh failed -> clear session and redirect admin users only
       if (typeof window !== "undefined") {
         localStorage.removeItem("accessToken");
-        // Force redirect to login page only if they are not already there
-        if (!window.location.pathname.startsWith("/admin/login")) {
+        // Force redirect to login page only if in admin panel
+        if (
+          window.location.pathname.startsWith("/admin") &&
+          !window.location.pathname.startsWith("/admin/login")
+        ) {
           window.location.href = "/admin/login";
         }
       }

@@ -56,7 +56,7 @@ export function About() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Fetch active education records dynamically
-  const { data: educationRecords = [] } = useQuery<EducationRecord[]>({
+  const { data: educationRecords = [], isError: isEduError, refetch: refetchEdu } = useQuery<EducationRecord[]>({
     queryKey: ["education-active"],
     queryFn: async () => {
       const res = await api.get("/education?status=Active");
@@ -65,7 +65,7 @@ export function About() {
   });
 
   // Fetch dynamic personal information from API
-  const { data: personalInfo } = useQuery({
+  const { data: personalInfo, isError: isPersonalInfoError, refetch: refetchPersonalInfo } = useQuery({
     queryKey: ["personal-info"],
     queryFn: async () => {
       const res = await api.get("/personal-info");
