@@ -126,9 +126,6 @@ const SOCIAL_LINKS = [
 
 /* ─── Elite Sub-components ────────────────────────────────── */
 
-import { useQuery } from "@tanstack/react-query";
-import { api } from "@/lib/api";
-
 const SOCIAL_ICONS: Record<string, React.ReactNode> = {
   github: (
     <svg viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4">
@@ -439,7 +436,7 @@ export function Hero() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Fetch dynamic personal information from API
-  const { data: personalInfo } = useQuery({
+  const { data: personalInfo } = useQuery<any>({
     queryKey: ["personal-info"],
     queryFn: async () => {
       const res = await api.get("/personal-info");
