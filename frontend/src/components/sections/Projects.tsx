@@ -25,6 +25,7 @@ export function Projects() {
       const res = await api.get("/projects?featured=true");
       return res.data?.data || [];
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   useEffect(() => {
@@ -124,7 +125,10 @@ export function Projects() {
         ref={headerRef}
         className="container-site relative z-10 pt-32 pb-16 flex flex-col items-center text-center"
       >
-        <h2 className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4">
+        <h2
+          className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4"
+          aria-label="Featured Projects by Aditya Sahu — Full Stack Developer & AI Engineer"
+        >
           {"Featured Projects".split(" ").map((word, wIdx, arr) => (
             <span key={wIdx} className="inline-block whitespace-nowrap">
               {word.split("").map((char, cIdx) => (
@@ -146,7 +150,7 @@ export function Projects() {
         <div className="glow-line w-24 h-1 bg-gradient-to-r from-[#0055ff] to-[#00d2ff] rounded-full shadow-[0_0_15px_#00d2ff] mb-8" style={{ transformOrigin: "center" }} />
         
         <p className="text-slate-400 max-w-2xl text-lg leading-relaxed">
-          A collection of projects focused on performance, clean architecture, user experience, and real-world problem solving.
+          A selection of full-stack React, Node.js, and MERN stack web applications — built with performance, clean architecture, and real-world problem solving in mind.
         </p>
       </div>
 

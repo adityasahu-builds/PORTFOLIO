@@ -4,6 +4,9 @@ import { useEffect, useState, useRef } from "react";
 import { motion, useMotionValue, useSpring, useMotionTemplate, AnimatePresence } from "framer-motion";
 import dynamic from "next/dynamic";
 import { Menu, X } from "lucide-react";
+import { ErrorBoundary } from "@/components/ui/ErrorBoundary";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
 const HeroCanvas = dynamic(
   () => import("@/components/three/HeroCanvas").then((m) => m.HeroCanvas),
@@ -433,8 +436,6 @@ function ScrollIndicator() {
 /* ─── Hero Component ─────────────────────────────────────── */
 export function Hero() {
   const [activeNav, setActiveNav] = useState("Home");
-  const [mounted, setMounted] = useState(false);
-  const [windowWidth, setWindowWidth] = useState(1200);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Fetch dynamic personal information from API
@@ -444,6 +445,7 @@ export function Hero() {
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   // Fetch active skills from backend to dynamically create skill cards
@@ -453,19 +455,8 @@ export function Hero() {
       const res = await api.get("/skills?status=Active");
       return res.data?.data || [];
     },
+    staleTime: 1000 * 60 * 60,
   });
-
-  useEffect(() => {
-    setMounted(true);
-    setWindowWidth(window.innerWidth);
-
-    const handleResize = () => setWindowWidth(window.innerWidth);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
 
   const name = personalInfo?.hero?.fullName || "Aditya Sahu";
 
@@ -586,8 +577,10 @@ export function Hero() {
       className="relative min-h-screen lg:h-screen lg:min-h-[680px] w-full overflow-hidden select-none flex items-center py-6 lg:py-0"
       style={{ background: "radial-gradient(ellipse 80% 60% at 50% 30%, #080f33 0%, #03040e 55%, #010105 100%)" }}
     >
-      {/* WebGL Particle Background */}
-      <HeroCanvas />
+      {/* WebGL Particle Background — wrapped in ErrorBoundary so WebGL failures don't crash the page */}
+      <ErrorBoundary>
+        <HeroCanvas />
+      </ErrorBoundary>
 
       {/* ── Background Aesthetics ── */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
@@ -965,7 +958,9 @@ export function Hero() {
             {/* The pre-rendered image asset containing the mockup card, orbits and badges */}
             <img
               src="/hero-card.png"
-              alt={name}
+              alt={`${name} — Full Stack Developer, AI Engineer & React Developer — Portfolio Showcase`}
+              width={553}
+              height={757}
               className="w-full h-full object-contain select-none pointer-events-none drop-shadow-[0_15px_35px_rgba(0,162,255,0.15)]"
               style={{
                 imageRendering: "auto",

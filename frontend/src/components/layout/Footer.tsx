@@ -26,6 +26,7 @@ export function Footer() {
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   const fullName = personalInfo?.hero?.fullName || "Aditya Sahu";
@@ -59,7 +60,10 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative w-full pt-20 pb-10 bg-[#020202] overflow-hidden">
+    <footer
+      className="relative w-full pt-20 pb-10 bg-[#020202] overflow-hidden"
+      aria-label="Site footer"
+    >
       {/* Soft Background Glows for Footer */}
       <div className="absolute top-0 left-1/4 w-[50vw] h-[50vw] bg-[#00d2ff]/5 blur-[150px] rounded-full pointer-events-none" />
       
@@ -70,7 +74,13 @@ export function Footer() {
           <div className="lg:col-span-2 flex flex-col items-start gap-6">
             <div className="w-20 h-20 rounded-full flex items-center justify-center shadow-[0_0_40px_rgba(0,210,255,0.25)] relative group cursor-pointer hover:shadow-[0_0_60px_rgba(0,210,255,0.4)] transition-all duration-500">
               <div className="absolute inset-0 bg-white/10 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <img src="/as-logo.png" alt="AS Logo" className="w-full h-full object-contain relative z-10" />
+              <img
+                src="/as-logo.png"
+                alt={`${fullName} — Full Stack Developer & AI Engineer Brand Logo`}
+                width={80}
+                height={80}
+                className="w-full h-full object-contain relative z-10"
+              />
             </div>
             <p className="text-slate-400 max-w-sm text-lg leading-relaxed font-light">
               Building modern digital experiences with clean architecture, immersive interfaces, and thoughtful user experiences.
@@ -112,6 +122,14 @@ export function Footer() {
                   key={i}
                   href={social.href}
                   download={social.download}
+                  target={!social.download ? "_blank" : undefined}
+                  rel={!social.download ? "noopener noreferrer" : undefined}
+                  aria-label={
+                    i === 0 ? `${fullName} on GitHub` :
+                    i === 1 ? `${fullName} on LinkedIn` :
+                    i === 2 ? `Email ${fullName}` :
+                    `Download ${fullName}'s Resume / CV`
+                  }
                   className="relative group w-12 h-12 rounded-full bg-white/[0.02] border border-white/[0.05] backdrop-blur-xl flex items-center justify-center text-slate-400 hover:text-white hover:border-[#00d2ff]/40 hover:bg-[#00d2ff]/10 hover:shadow-[0_15px_30px_rgba(0,210,255,0.15)] hover:-translate-y-2 transition-all duration-500 overflow-hidden"
                 >
                   <div className="absolute inset-0 bg-gradient-to-t from-[#00d2ff]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />

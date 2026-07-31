@@ -26,6 +26,7 @@ export function NavBar() {
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   const fullName = personalInfo?.hero?.fullName || "Aditya Sahu";

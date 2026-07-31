@@ -62,6 +62,7 @@ export function About() {
       const res = await api.get("/education?status=Active");
       return res.data?.data || [];
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   // Fetch dynamic personal information from API
@@ -71,6 +72,7 @@ export function About() {
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   // Fetch active skills dynamically from database
@@ -80,6 +82,7 @@ export function About() {
       const res = await api.get("/skills?status=Active");
       return res.data?.data || [];
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   // Fetch active certificates dynamically from database
@@ -89,6 +92,7 @@ export function About() {
       const res = await api.get("/certificates?status=Active");
       return res.data?.data || [];
     },
+    staleTime: 1000 * 60 * 60,
   });
 
   const fullName = personalInfo?.hero?.fullName || "Aditya Sahu";
@@ -223,7 +227,9 @@ export function About() {
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                     src={personalInfo?.about?.portraitImage || "/aditya.jpg"} 
-                    alt="Portrait" 
+                    alt={`${fullName} — Full Stack Developer & AI Engineer`}
+                    width={192}
+                    height={192}
                     className="w-full h-full object-cover rounded-full" 
                   />
                 </div>
