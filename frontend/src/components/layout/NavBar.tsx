@@ -8,7 +8,9 @@ import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 
 const NAV_LINKS = [
+  { label: "Home", href: "#", id: "home" },
   { label: "About", href: "#about", id: "about" },
+  { label: "Skills", href: "#stack", id: "stack" },
   { label: "Projects", href: "#projects", id: "projects" },
   { label: "Contact", href: "#contact", id: "contact" },
 ];
