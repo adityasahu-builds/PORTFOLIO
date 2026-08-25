@@ -117,10 +117,11 @@ export function Hero() {
       />
 
       {/* ── Main Interactive Canvas: Left Content, Center Workspace, Right Cards ── */}
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-6 sm:px-8 md:px-10 lg:px-12 flex-1 flex flex-col justify-center pt-24 pb-8 lg:py-0">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-6 items-center w-full">
-          {/* ── C. Left Content (Span 6 columns on desktop) ── */}
-          <div className="lg:col-span-6 xl:col-span-6 flex justify-start items-center">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-5 sm:px-8 md:px-10 lg:px-12 flex-1 flex flex-col justify-center pt-20 pb-6 lg:py-0">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 items-center w-full">
+
+          {/* ── C. Left Content — full width on mobile, 6 cols on desktop ── */}
+          <div className="col-span-1 lg:col-span-6 xl:col-span-6 flex justify-start items-center">
             <HeroContent
               mouseX={textX}
               mouseY={textY}
@@ -128,17 +129,18 @@ export function Hero() {
             />
           </div>
 
-          {/* ── Center Photographic Space Buffer (Span 1 column on 12-col grid to keep developer unobstructed) ── */}
+          {/* ── Center buffer (desktop only) ── */}
           <div className="hidden xl:block xl:col-span-1 pointer-events-none" />
 
-          {/* ── D. Right Capability Cards (Span 5 columns on desktop) ── */}
-          <div className="lg:col-span-6 xl:col-span-5 flex justify-center lg:justify-end items-center">
+          {/* ── D. Right Capability Cards — hidden on phones, visible on lg+ ── */}
+          <div className="hidden lg:flex lg:col-span-6 xl:col-span-5 justify-center lg:justify-end items-center">
             <HeroCapabilityCards
               mouseX={cardsX}
               mouseY={cardsY}
               reducedMotion={!!prefersReduced}
             />
           </div>
+
         </div>
       </div>
 

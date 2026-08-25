@@ -82,7 +82,7 @@ export function HeroContent({
 
   return (
     <motion.div
-      className="flex flex-col items-start text-left w-full max-w-[600px] z-10 select-none"
+      className="flex flex-col items-start text-left w-full max-w-full lg:max-w-[600px] z-10 select-none"
       style={{
         x: reducedMotion || !mouseX ? 0 : mouseX,
         y: reducedMotion || !mouseY ? 0 : mouseY,
@@ -97,9 +97,9 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.2,
         }}
-        className="flex items-center gap-3 mb-4 sm:mb-6"
+        className="flex items-center gap-2 mb-2 sm:mb-4 lg:mb-6"
       >
-        <span className="text-slate-300/90 text-[15px] sm:text-[17px] font-medium font-sans">
+        <span className="text-slate-300/90 text-[12px] sm:text-[15px] lg:text-[17px] font-medium font-sans">
           Hi, I&apos;m
         </span>
         <span className="w-6 h-[2px] bg-gradient-to-r from-[#0055ff] to-[#00d2ff] rounded-full inline-block" />
@@ -114,7 +114,7 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.35,
         }}
-        className="text-[42px] xs:text-[50px] sm:text-[62px] lg:text-[72px] xl:text-[78px] font-extrabold tracking-[-0.02em] leading-[1.08] mb-6 sm:mb-8 font-sans"
+        className="text-[32px] xs:text-[38px] sm:text-[52px] lg:text-[72px] xl:text-[78px] font-extrabold tracking-[-0.02em] leading-[1.08] mb-2 sm:mb-5 lg:mb-10 font-sans"
       >
         <span className="text-[#00d2ff] drop-shadow-[0_0_24px_rgba(0,210,255,0.35)]">
           Aditya
@@ -133,9 +133,9 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.5,
         }}
-        className="mb-6"
+        className="mb-2 sm:mb-4 lg:mb-8"
       >
-        <h2 className="text-[#00d2ff] text-[20px] sm:text-[24px] font-semibold tracking-tight font-sans drop-shadow-[0_0_12px_rgba(0,210,255,0.25)] leading-[1.25]">
+        <h2 className="text-[#00d2ff] text-[14px] sm:text-[20px] lg:text-[24px] font-semibold tracking-tight font-sans drop-shadow-[0_0_12px_rgba(0,210,255,0.25)] leading-[1.25]">
           Full Stack Developer &amp; AI/ML Engineer
         </h2>
       </motion.div>
@@ -149,7 +149,7 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.65,
         }}
-        className="text-slate-300/85 text-[15px] sm:text-[16px] lg:text-[17px] leading-[1.7] max-w-[580px] mb-8 sm:mb-9 font-normal font-sans"
+        className="text-slate-300/80 text-[12px] sm:text-[14px] lg:text-[17px] leading-[1.6] max-w-full lg:max-w-[580px] mb-4 sm:mb-7 lg:mb-12 font-normal font-sans"
       >
         I am a passionate software developer with a strong interest in Full Stack Web Development and AI/ML.
       </motion.p>
@@ -163,13 +163,13 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.75,
         }}
-        className="flex items-center flex-wrap gap-4 mb-10 sm:mb-12 w-full"
+        className="flex items-center flex-wrap gap-2 sm:gap-3 lg:gap-4 mb-5 sm:mb-8 lg:mb-14 w-full"
       >
         {/* Primary CTA */}
         <a
           href="#projects"
           onClick={handleScrollTo("#projects")}
-          className="group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 rounded-[12px] text-[15px] font-semibold text-white bg-gradient-to-r from-[#0066ff] to-[#00b4ff] shadow-[0_4px_20px_rgba(0,102,255,0.45)] transition-all duration-300 hover:shadow-[0_0_28px_rgba(0,180,255,0.65)] hover:-translate-y-0.5 active:scale-95 shrink-0"
+          className="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-7 sm:py-3.5 lg:py-4 rounded-[10px] sm:rounded-[12px] text-[13px] sm:text-[15px] font-semibold text-white bg-gradient-to-r from-[#0066ff] to-[#00b4ff] shadow-[0_4px_20px_rgba(0,102,255,0.45)] transition-all duration-300 hover:shadow-[0_0_28px_rgba(0,180,255,0.65)] hover:-translate-y-0.5 active:scale-95 shrink-0"
           aria-label="Explore My Projects"
         >
           <span>Explore My Projects</span>
@@ -180,7 +180,7 @@ export function HeroContent({
         <a
           href="#contact"
           onClick={handleScrollTo("#contact")}
-          className="group relative inline-flex items-center justify-center gap-2.5 px-7 py-3.5 sm:py-4 rounded-[12px] text-[15px] font-semibold text-[#00d2ff] bg-[rgba(5,10,25,0.65)] border border-[rgba(0,210,255,0.45)] backdrop-blur-xl transition-all duration-300 hover:border-[#00d2ff] hover:text-white hover:bg-[rgba(0,210,255,0.15)] hover:shadow-[0_0_22px_rgba(0,210,255,0.35)] hover:-translate-y-0.5 active:scale-95 shrink-0"
+          className="group relative inline-flex items-center justify-center gap-2 px-5 py-2.5 sm:px-7 sm:py-3.5 lg:py-4 rounded-[10px] sm:rounded-[12px] text-[13px] sm:text-[15px] font-semibold text-[#00d2ff] bg-[rgba(5,10,25,0.65)] border border-[rgba(0,210,255,0.45)] backdrop-blur-xl transition-all duration-300 hover:border-[#00d2ff] hover:text-white hover:bg-[rgba(0,210,255,0.15)] hover:shadow-[0_0_22px_rgba(0,210,255,0.35)] hover:-translate-y-0.5 active:scale-95 shrink-0"
           aria-label="Contact Me"
         >
           <span>Contact Me</span>

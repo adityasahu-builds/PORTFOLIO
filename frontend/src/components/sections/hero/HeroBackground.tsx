@@ -11,8 +11,8 @@ interface HeroBackgroundProps {
 export function HeroBackground({ mouseX, mouseY, reducedMotion }: HeroBackgroundProps) {
   return (
     <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none select-none z-0 bg-[#030718]">
-      {/* ── Photographic Background Image Layer ── */}
-      {/* Opacity set precisely to 85.6% so the original photo details and cinematic colors render accurately */}
+
+      {/* ── Photographic Background Image Layer — visible on ALL screen sizes ── */}
       <motion.div
         className="absolute inset-0 w-full h-full"
         style={{
@@ -35,17 +35,16 @@ export function HeroBackground({ mouseX, mouseY, reducedMotion }: HeroBackground
         />
       </motion.div>
 
-      {/* ── Subtle Ambient Shadows for crisp UI readability without washing out the photo ── */}
-      {/* Soft dark gradient behind left text */}
+      {/* ── Soft dark gradient behind left text (stronger on mobile for readability) ── */}
       <div
-        className="absolute inset-y-0 left-0 w-[55%] lg:w-[48%]"
+        className="absolute inset-y-0 left-0 w-full sm:w-[65%] lg:w-[48%]"
         style={{
           background:
-            "linear-gradient(to right, rgba(3, 7, 24, 0.65) 0%, rgba(3, 7, 24, 0.3) 65%, transparent 100%)",
+            "linear-gradient(to right, rgba(3, 7, 24, 0.82) 0%, rgba(3, 7, 24, 0.55) 55%, transparent 100%)",
         }}
       />
 
-      {/* Top subtle navbar shadow */}
+      {/* Top navbar shadow */}
       <div
         className="absolute top-0 left-0 right-0 h-24"
         style={{
@@ -54,7 +53,7 @@ export function HeroBackground({ mouseX, mouseY, reducedMotion }: HeroBackground
         }}
       />
 
-      {/* Bottom smooth section transition blend */}
+      {/* Bottom section transition blend */}
       <div
         className="absolute bottom-0 left-0 right-0 h-24"
         style={{
