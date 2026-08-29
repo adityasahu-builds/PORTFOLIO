@@ -3,6 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Download } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
 interface HeroNavbarProps {
   activeNav?: string;
@@ -24,6 +26,17 @@ export function HeroNavbar({
   reducedMotion,
 }: HeroNavbarProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const { data: personalInfo } = useQuery({
+    queryKey: ["personal-info"],
+    queryFn: async () => {
+      const res = await api.get("/personal-info");
+      return res.data?.data;
+    },
+    staleTime: 1000 * 60 * 60,
+  });
+
+  const resumeUrl = personalInfo?.socialLinks?.resume || personalInfo?.resume || "/cv.png";
 
   const handleClick = (href: string, label: string) => (e: React.MouseEvent) => {
     e.preventDefault();
@@ -122,8 +135,10 @@ export function HeroNavbar({
         {/* ── RIGHT: Download CV Button (Desktop) ── */}
         <div className="hidden md:flex items-center shrink-0">
           <a
-            href="/cv.png"
-            download
+            href={resumeUrl}
+            download={resumeUrl.endsWith(".png") || resumeUrl.endsWith(".pdf") ? "cv.png" : undefined}
+            target={resumeUrl.startsWith("http") ? "_blank" : undefined}
+            rel={resumeUrl.startsWith("http") ? "noopener noreferrer" : undefined}
             className="group relative inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full text-sm font-semibold text-[#00d2ff] bg-[rgba(5,10,25,0.6)] border border-[rgba(80,150,255,0.35)] backdrop-blur-xl transition-all duration-300 hover:border-[#00d2ff] hover:text-white hover:bg-[rgba(0,162,255,0.15)] hover:shadow-[0_0_24px_rgba(0,210,255,0.35)] hover:-translate-y-0.5 active:scale-95"
             aria-label="Download Curriculum Vitae"
           >
@@ -135,8 +150,10 @@ export function HeroNavbar({
         {/* ── Mobile Menu Toggle Button & CV Button ── */}
         <div className="flex md:hidden items-center gap-2 sm:gap-3 shrink-0">
           <a
-            href="/cv.png"
-            download
+            href={resumeUrl}
+            download={resumeUrl.endsWith(".png") || resumeUrl.endsWith(".pdf") ? "cv.png" : undefined}
+            target={resumeUrl.startsWith("http") ? "_blank" : undefined}
+            rel={resumeUrl.startsWith("http") ? "noopener noreferrer" : undefined}
             className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#00d2ff] bg-[rgba(5,10,25,0.7)] border border-[rgba(80,150,255,0.35)] backdrop-blur-md active:scale-95 transition-all shadow-[0_0_12px_rgba(0,210,255,0.2)]"
             aria-label="Download CV"
           >
