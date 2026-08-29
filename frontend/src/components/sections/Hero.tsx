@@ -117,11 +117,11 @@ export function Hero() {
       />
 
       {/* ── Main Interactive Canvas: Left Content, Center Workspace, Right Cards ── */}
-      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-5 sm:px-8 md:px-10 lg:px-12 flex-1 flex flex-col justify-center pt-20 pb-6 lg:py-0">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 items-center w-full">
+      <div className="relative z-10 w-full max-w-[1600px] mx-auto px-4 sm:px-8 md:px-10 lg:px-12 flex-1 flex flex-col justify-end lg:justify-center pt-24 sm:pt-28 lg:pt-0 pb-2 sm:pb-4 lg:pb-0">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 lg:gap-6 items-end lg:items-center w-full">
 
           {/* ── C. Left Content — full width on mobile, 6 cols on desktop ── */}
-          <div className="col-span-1 lg:col-span-6 xl:col-span-6 flex justify-start items-center">
+          <div className="col-span-1 lg:col-span-6 xl:col-span-6 flex justify-start items-end lg:items-center">
             <HeroContent
               mouseX={textX}
               mouseY={textY}
@@ -145,7 +145,7 @@ export function Hero() {
       </div>
 
       {/* ── Scroll Indicator ── */}
-      <div className="relative z-10 w-full flex flex-col items-center pb-5 sm:pb-6 px-4">
+      <div className="relative z-10 w-full flex flex-col items-center pb-2 sm:pb-5 px-4">
         <HeroScrollIndicator reducedMotion={!!prefersReduced} />
       </div>
     </section>

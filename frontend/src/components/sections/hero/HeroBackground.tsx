@@ -27,17 +27,26 @@ export function HeroBackground({ mouseX, mouseY, reducedMotion }: HeroBackground
           loading="eager"
           decoding="async"
           fetchPriority="high"
-          className="w-full h-full object-cover object-[center_35%] lg:object-[center_28%]"
+          className="w-full h-full object-cover object-[center_top] sm:object-[center_20%] lg:object-[center_28%]"
           style={{
-            opacity: 0.856,
+            opacity: 0.88,
             transform: "translateZ(0)",
           }}
         />
       </motion.div>
 
-      {/* ── Soft dark gradient behind left text (stronger on mobile for readability) ── */}
+      {/* ── Mobile gradient overlay: crystal clear at top for face & neon sign, smooth dark gradient on bottom for text & laptop ── */}
       <div
-        className="absolute inset-y-0 left-0 w-full sm:w-[65%] lg:w-[48%]"
+        className="block lg:hidden absolute inset-0 w-full h-full pointer-events-none"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(3, 7, 24, 0.10) 0%, rgba(3, 7, 24, 0.15) 30%, rgba(3, 7, 24, 0.65) 55%, rgba(3, 7, 24, 0.92) 78%, rgba(3, 7, 24, 0.98) 100%), linear-gradient(90deg, rgba(3, 8, 20, 0.70) 0%, rgba(3, 8, 20, 0.35) 60%, rgba(3, 8, 20, 0.10) 100%)",
+        }}
+      />
+
+      {/* ── Desktop soft dark gradient behind left text ── */}
+      <div
+        className="hidden lg:block absolute inset-y-0 left-0 w-[48%] pointer-events-none"
         style={{
           background:
             "linear-gradient(to right, rgba(3, 7, 24, 0.82) 0%, rgba(3, 7, 24, 0.55) 55%, transparent 100%)",
@@ -46,16 +55,16 @@ export function HeroBackground({ mouseX, mouseY, reducedMotion }: HeroBackground
 
       {/* Top navbar shadow */}
       <div
-        className="absolute top-0 left-0 right-0 h-24"
+        className="absolute top-0 left-0 right-0 h-20 sm:h-24 pointer-events-none"
         style={{
           background:
-            "linear-gradient(to bottom, rgba(3, 7, 24, 0.5) 0%, transparent 100%)",
+            "linear-gradient(to bottom, rgba(3, 7, 24, 0.6) 0%, transparent 100%)",
         }}
       />
 
       {/* Bottom section transition blend */}
       <div
-        className="absolute bottom-0 left-0 right-0 h-24"
+        className="absolute bottom-0 left-0 right-0 h-20 sm:h-24 pointer-events-none"
         style={{
           background:
             "linear-gradient(to top, #03040e 0%, rgba(3, 4, 14, 0.6) 50%, transparent 100%)",

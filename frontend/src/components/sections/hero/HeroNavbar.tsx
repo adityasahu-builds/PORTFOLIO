@@ -48,14 +48,14 @@ export function HeroNavbar({
         ease: [0.22, 1, 0.36, 1],
         delay: 0.1,
       }}
-      className="absolute top-0 left-0 right-0 z-30 w-full select-none"
+      className="absolute top-0 left-0 right-0 z-40 w-full select-none"
     >
-      <div className="w-full max-w-[1600px] mx-auto h-20 lg:h-24 px-6 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between">
+      <div className="w-full max-w-[1600px] mx-auto h-16 sm:h-20 lg:h-24 px-4 sm:px-8 md:px-10 lg:px-12 flex items-center justify-between">
         {/* ── LEFT: "AS" Logo / Monogram ── */}
         <a
           href="#"
           onClick={handleClick("#", "Home")}
-          className="group flex items-center gap-1.5 text-2xl lg:text-[28px] font-bold font-display tracking-wider text-white transition-transform duration-300 hover:scale-105"
+          className="group flex items-center gap-1.5 text-xl sm:text-2xl lg:text-[28px] font-bold font-display tracking-wider text-white transition-transform duration-300 hover:scale-105 shrink-0"
           aria-label="Aditya Sahu Home"
         >
           <span className="text-white">A</span>
@@ -119,8 +119,8 @@ export function HeroNavbar({
           </ul>
         </nav>
 
-        {/* ── RIGHT: Download CV Button ── */}
-        <div className="hidden md:flex items-center">
+        {/* ── RIGHT: Download CV Button (Desktop) ── */}
+        <div className="hidden md:flex items-center shrink-0">
           <a
             href="/cv.png"
             download
@@ -132,12 +132,12 @@ export function HeroNavbar({
           </a>
         </div>
 
-        {/* ── Mobile Menu Toggle Button ── */}
-        <div className="flex md:hidden items-center gap-3">
+        {/* ── Mobile Menu Toggle Button & CV Button ── */}
+        <div className="flex md:hidden items-center gap-2 sm:gap-3 shrink-0">
           <a
             href="/cv.png"
             download
-            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#00d2ff] bg-[rgba(5,10,25,0.65)] border border-[rgba(80,150,255,0.35)] backdrop-blur-md"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold text-[#00d2ff] bg-[rgba(5,10,25,0.7)] border border-[rgba(80,150,255,0.35)] backdrop-blur-md active:scale-95 transition-all shadow-[0_0_12px_rgba(0,210,255,0.2)]"
             aria-label="Download CV"
           >
             <span>CV</span>
@@ -145,7 +145,7 @@ export function HeroNavbar({
           </a>
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-xl text-slate-300 hover:text-white bg-[rgba(5,10,25,0.65)] border border-[rgba(80,150,255,0.25)] backdrop-blur-md transition-colors"
+            className="p-1.5 sm:p-2 rounded-xl text-slate-200 hover:text-white bg-[rgba(5,10,25,0.7)] border border-[rgba(80,150,255,0.3)] backdrop-blur-md transition-colors active:scale-95"
             aria-label="Toggle navigation menu"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -160,8 +160,8 @@ export function HeroNavbar({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="md:hidden w-full bg-[rgba(3,7,24,0.94)] border-b border-[rgba(80,150,255,0.25)] backdrop-blur-2xl px-6 py-4 shadow-[0_20px_40px_rgba(0,0,0,0.8)] overflow-hidden"
+            transition={{ duration: 0.25, ease: "easeInOut" }}
+            className="md:hidden w-full bg-[rgba(3,7,24,0.96)] border-b border-[rgba(80,150,255,0.25)] backdrop-blur-2xl px-5 sm:px-6 py-4 shadow-[0_20px_40px_rgba(0,0,0,0.85)] overflow-hidden"
           >
             <ul className="flex flex-col gap-3 list-none m-0 p-0">
               {NAV_ITEMS.map((item) => (
