@@ -47,6 +47,8 @@ html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  max-width: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -54,6 +56,7 @@ body {
   color: var(--text-primary);
   font-family: var(--font-inter), 'Inter', system-ui, -apple-system, sans-serif;
   line-height: 1.6;
+  max-width: 100%;
   overflow-x: hidden;
   cursor: auto;
 }

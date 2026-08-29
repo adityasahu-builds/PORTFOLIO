@@ -27,20 +27,20 @@ export function HeroBackground({ mouseX, mouseY, reducedMotion }: HeroBackground
           loading="eager"
           decoding="async"
           fetchPriority="high"
-          className="w-full h-full object-cover object-[center_top] sm:object-[center_20%] lg:object-[center_28%]"
+          className="w-full h-full object-cover object-[58%_top] sm:object-[center_20%] lg:object-[center_28%]"
           style={{
-            opacity: 0.88,
+            opacity: 0.90,
             transform: "translateZ(0)",
           }}
         />
       </motion.div>
 
-      {/* ── Mobile gradient overlay: crystal clear at top for face & neon sign, smooth dark gradient on bottom for text & laptop ── */}
+      {/* ── Mobile gradient overlay: crystal clear at top (90% vivid intensity), smooth dark blend at bottom for text ── */}
       <div
         className="block lg:hidden absolute inset-0 w-full h-full pointer-events-none"
         style={{
           background:
-            "linear-gradient(180deg, rgba(3, 7, 24, 0.10) 0%, rgba(3, 7, 24, 0.15) 30%, rgba(3, 7, 24, 0.65) 55%, rgba(3, 7, 24, 0.92) 78%, rgba(3, 7, 24, 0.98) 100%), linear-gradient(90deg, rgba(3, 8, 20, 0.70) 0%, rgba(3, 8, 20, 0.35) 60%, rgba(3, 8, 20, 0.10) 100%)",
+            "linear-gradient(180deg, rgba(3, 7, 24, 0.05) 0%, rgba(3, 7, 24, 0) 30%, rgba(3, 7, 24, 0.45) 60%, rgba(3, 7, 24, 0.88) 85%, rgba(3, 7, 24, 0.98) 100%)",
         }}
       />
 

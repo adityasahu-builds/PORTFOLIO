@@ -97,12 +97,12 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.2,
         }}
-        className="flex items-center gap-2 mb-1 sm:mb-4 lg:mb-6"
+        className="flex items-center gap-2 mb-[12px] sm:mb-4 lg:mb-6"
       >
-        <span className="text-slate-300/90 text-[11.5px] sm:text-[15px] lg:text-[17px] font-medium font-sans">
+        <span className="text-slate-300/90 text-[13px] sm:text-[15px] lg:text-[17px] font-medium font-sans">
           Hi, I&apos;m
         </span>
-        <span className="w-5 sm:w-6 h-[2px] bg-gradient-to-r from-[#0055ff] to-[#00d2ff] rounded-full inline-block" />
+        <span className="w-6 h-[2px] bg-gradient-to-r from-[#0055ff] to-[#00d2ff] rounded-full inline-block" />
       </motion.div>
 
       {/* ── 2. Headline: "Aditya Sahu" ── */}
@@ -114,7 +114,7 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.35,
         }}
-        className="text-[28px] xs:text-[34px] sm:text-[54px] lg:text-[72px] xl:text-[78px] font-extrabold tracking-[-0.02em] leading-[1.08] mb-1 sm:mb-4 lg:mb-10 font-sans max-w-full"
+        className="text-[clamp(40px,10.5vw,56px)] sm:text-[54px] lg:text-[72px] xl:text-[78px] font-extrabold tracking-[-0.02em] leading-none mb-[10px] sm:mb-4 lg:mb-10 font-sans max-w-full"
       >
         <span className="text-[#00d2ff] drop-shadow-[0_0_24px_rgba(0,210,255,0.35)]">
           Aditya
@@ -133,9 +133,9 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.5,
         }}
-        className="mb-1.5 sm:mb-4 lg:mb-8 max-w-full"
+        className="mb-[14px] sm:mb-4 lg:mb-8 max-w-full"
       >
-        <h2 className="text-[#00d2ff] text-[13px] xs:text-[15px] sm:text-[20px] lg:text-[24px] font-semibold tracking-tight font-sans drop-shadow-[0_0_12px_rgba(0,210,255,0.25)] leading-[1.3] max-w-full break-words">
+        <h2 className="text-[#00d2ff] text-[clamp(16px,4.3vw,22px)] sm:text-[20px] lg:text-[24px] font-semibold tracking-tight font-sans drop-shadow-[0_0_12px_rgba(0,210,255,0.25)] leading-[1.25] max-w-full break-words">
           Full Stack Developer &amp; AI/ML Engineer
         </h2>
       </motion.div>
@@ -149,7 +149,7 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.65,
         }}
-        className="text-slate-300/85 text-[12px] sm:text-[14px] lg:text-[17px] leading-[1.45] sm:leading-[1.6] max-w-full lg:max-w-[580px] mb-3 sm:mb-6 lg:mb-12 font-normal font-sans"
+        className="text-slate-300/85 text-[15px] sm:text-[14px] lg:text-[17px] leading-[1.5] sm:leading-[1.6] max-w-full lg:max-w-[580px] mb-[22px] sm:mb-6 lg:mb-12 font-normal font-sans"
       >
         <span className="block sm:hidden">
           I build modern web applications and AI-powered solutions.
@@ -168,28 +168,28 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.75,
         }}
-        className="flex items-center flex-wrap gap-2 sm:gap-3.5 lg:gap-4 mb-3 sm:mb-7 lg:mb-14 w-full"
+        className="flex items-center flex-wrap gap-[10px] sm:gap-3.5 lg:gap-4 mb-[24px] sm:mb-7 lg:mb-14 w-full"
       >
         {/* Primary CTA */}
         <a
           href="#projects"
           onClick={handleScrollTo("#projects")}
-          className="group relative inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-7 sm:py-3.5 lg:py-4 rounded-[10px] sm:rounded-[12px] text-[12px] sm:text-[15px] font-semibold text-white bg-gradient-to-r from-[#0066ff] to-[#00b4ff] shadow-[0_4px_20px_rgba(0,102,255,0.45)] transition-all duration-300 hover:shadow-[0_0_28px_rgba(0,180,255,0.65)] hover:-translate-y-0.5 active:scale-95 shrink-0"
+          className="group relative inline-flex items-center justify-center gap-2 min-h-[44px] px-4 sm:px-7 py-2.5 sm:py-3.5 lg:py-4 rounded-[12px] text-[13.5px] sm:text-[15px] font-semibold text-white bg-gradient-to-r from-[#0066ff] to-[#00b4ff] shadow-[0_4px_20px_rgba(0,102,255,0.45)] transition-all duration-300 hover:shadow-[0_0_28px_rgba(0,180,255,0.65)] hover:-translate-y-0.5 active:scale-95 shrink-0"
           aria-label="Explore My Projects"
         >
           <span>Explore My Projects</span>
-          <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </a>
 
         {/* Secondary CTA */}
         <a
           href="#contact"
           onClick={handleScrollTo("#contact")}
-          className="group relative inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3.5 py-2 sm:px-7 sm:py-3.5 lg:py-4 rounded-[10px] sm:rounded-[12px] text-[12px] sm:text-[15px] font-semibold text-[#00d2ff] bg-[rgba(5,10,25,0.65)] border border-[rgba(0,210,255,0.45)] backdrop-blur-xl transition-all duration-300 hover:border-[#00d2ff] hover:text-white hover:bg-[rgba(0,210,255,0.15)] hover:shadow-[0_0_22px_rgba(0,210,255,0.35)] hover:-translate-y-0.5 active:scale-95 shrink-0"
+          className="group relative inline-flex items-center justify-center gap-2 min-h-[44px] px-4 sm:px-7 py-2.5 sm:py-3.5 lg:py-4 rounded-[12px] text-[13.5px] sm:text-[15px] font-semibold text-[#00d2ff] bg-[rgba(5,10,25,0.65)] border border-[rgba(0,210,255,0.45)] backdrop-blur-xl transition-all duration-300 hover:border-[#00d2ff] hover:text-white hover:bg-[rgba(0,210,255,0.15)] hover:shadow-[0_0_22px_rgba(0,210,255,0.35)] hover:-translate-y-0.5 active:scale-95 shrink-0"
           aria-label="Contact Me"
         >
           <span>Contact Me</span>
-          <ArrowUpRight className="w-3.5 h-3.5 sm:w-4 sm:h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+          <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </a>
       </motion.div>
 
@@ -202,15 +202,15 @@ export function HeroContent({
           ease: [0.22, 1, 0.36, 1],
           delay: 0.85,
         }}
-        className="flex flex-col items-start gap-1.5 sm:gap-4 w-full"
+        className="flex flex-col items-start gap-[14px] sm:gap-4 w-full"
       >
-        <div className="flex items-center gap-2 text-[9.5px] sm:text-[11px] font-semibold tracking-[0.15em] text-slate-400 uppercase font-sans">
+        <div className="flex items-center gap-2 text-[11px] font-semibold tracking-[0.15em] text-slate-400 uppercase font-sans">
           <span>LET&apos;S CONNECT</span>
-          <span className="w-5 sm:w-6 h-[1px] bg-[rgba(80,150,255,0.4)]" />
+          <span className="w-6 h-[1px] bg-[rgba(80,150,255,0.4)]" />
         </div>
 
-        {/* Icons with 8-10px gap, 52px dimensions */}
-        <div className="flex items-center gap-1.5 xs:gap-2 sm:gap-3 flex-wrap max-w-full">
+        {/* Icons with 10px gap, clamp 46-52px dimensions */}
+        <div className="flex items-center gap-[10px] sm:gap-3 flex-wrap max-w-full">
           {SOCIAL_ITEMS.map((item) => (
             <a
               key={item.id}
@@ -218,9 +218,9 @@ export function HeroContent({
               target="_blank"
               rel="noopener noreferrer"
               aria-label={item.label}
-              className="group relative w-[38px] h-[38px] xs:w-[42px] xs:h-[42px] sm:w-[52px] sm:h-[52px] rounded-[10px] sm:rounded-[14px] bg-[rgba(5,10,25,0.7)] border border-[rgba(80,150,255,0.25)] backdrop-blur-md flex items-center justify-center text-slate-300 transition-all duration-300 hover:text-[#00d2ff] hover:border-[rgba(0,210,255,0.5)] hover:bg-[rgba(0,210,255,0.1)] hover:shadow-[0_0_18px_rgba(0,210,255,0.3)] hover:scale-105 hover:-translate-y-0.5 active:scale-95 shrink-0"
+              className="group relative w-[clamp(46px,12.5vw,52px)] h-[clamp(46px,12.5vw,52px)] sm:w-[52px] sm:h-[52px] rounded-[14px] bg-[rgba(5,10,25,0.7)] border border-[rgba(80,150,255,0.25)] backdrop-blur-md flex items-center justify-center text-slate-300 transition-all duration-300 hover:text-[#00d2ff] hover:border-[rgba(0,210,255,0.5)] hover:bg-[rgba(0,210,255,0.1)] hover:shadow-[0_0_18px_rgba(0,210,255,0.3)] hover:scale-105 hover:-translate-y-0.5 active:scale-95 shrink-0"
             >
-              <div className="[&>svg]:w-4 [&>svg]:h-4 sm:[&>svg]:w-5 sm:[&>svg]:h-5">
+              <div className="[&>svg]:w-5 [&>svg]:h-5">
                 {item.icon}
               </div>
             </a>
