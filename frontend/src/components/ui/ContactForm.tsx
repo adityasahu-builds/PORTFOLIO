@@ -20,7 +20,9 @@ export function ContactForm() {
     setError(null);
     
     try {
-      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+      const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL && !process.env.NEXT_PUBLIC_API_URL.includes("localhost:5000") && !process.env.NEXT_PUBLIC_API_URL.includes("onrender.com")
+        ? process.env.NEXT_PUBLIC_API_URL
+        : "/api/v1";
       const response = await fetch(`${API_BASE_URL}/contact`, {
         method: "POST",
         headers: {

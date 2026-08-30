@@ -1,11 +1,30 @@
 import axios from "axios";
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+// Default to local App Router API routes (/api/v1) for seamless same-origin communication on Vercel
+const getBaseUrl = () => {
+  if (typeof window !== "undefined") {
+    // In browser: relative URL works automatically on same domain (adityasahubuilds.dev or localhost)
+    if (process.env.NEXT_PUBLIC_API_URL && !process.env.NEXT_PUBLIC_API_URL.includes("localhost:5000") && !process.env.NEXT_PUBLIC_API_URL.includes("onrender.com")) {
+      return process.env.NEXT_PUBLIC_API_URL;
+    }
+    return "/api/v1";
+  }
+  // In SSR / Server context
+  if (process.env.NEXT_PUBLIC_SITE_URL) {
+    return `${process.env.NEXT_PUBLIC_SITE_URL}/api/v1`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}/api/v1`;
+  }
+  return "http://localhost:3000/api/v1";
+};
+
+const API_BASE_URL = getBaseUrl();
 
 // Primary API Client
 export const api = axios.create({
   baseURL: API_BASE_URL,
-  timeout: 15000, // 15s timeout to prevent infinite pending promises during cold starts
+  timeout: 15000, // 15s timeout
   withCredentials: true, // Crucial for reading/writing secure httpOnly cookies
   headers: {
     "Content-Type": "application/json",

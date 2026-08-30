@@ -71,7 +71,21 @@ export const viewport: Viewport = {
 /* ─── Metadata ───────────────────────────────────────────── */
 export async function generateMetadata(): Promise<Metadata> {
   const API_BASE_URL =
-    process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1";
+    process.env.NEXT_PUBLIC_API_URL &&
+    !process.env.NEXT_PUBLIC_API_URL.includes("localhost:5000") &&
+    !process.env.NEXT_PUBLIC_API_URL.includes("onrender.com")
+      ? process.env.NEXT_PUBLIC_API_URL
+      : process.env.NEXT_PUBLIC_SITE_URL
+      ? `${process.env.NEXT_PUBLIC_SITE_URL}/api/v1`
+      : "";
+
+  if (!API_BASE_URL) {
+    return buildMetadata({
+      title: DEFAULT_TITLE,
+      description: DEFAULT_DESCRIPTION,
+      fullName: "Aditya Sahu",
+    });
+  }
 
   try {
     const res = await fetch(`${API_BASE_URL}/personal-info`, {
@@ -217,17 +231,6 @@ export default function RootLayout({
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        {/* DNS Prefetch for the Render.com backend API */}
-        <link
-          rel="dns-prefetch"
-          href="https://portfolio-9sbp.onrender.com"
-        />
-        {/* Preconnect to backend API for faster first data fetch */}
-        <link
-          rel="preconnect"
-          href="https://portfolio-9sbp.onrender.com"
           crossOrigin="anonymous"
         />
         {/* Apple Touch Icon */}
