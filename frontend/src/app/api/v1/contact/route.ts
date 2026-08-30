@@ -35,7 +35,10 @@ export async function POST(req: NextRequest) {
 
     // Optional Brevo email delivery in background
     const brevoApiKey = process.env.BREVO_API_KEY;
-    const receiverEmail = process.env.CONTACT_RECEIVER_EMAIL || "adityasahu7354@gmail.com";
+    const receiverEmail = process.env.CONTACT_RECEIVER_EMAIL || "aditya261226@gmail.com";
+    const senderEmail = process.env.EMAIL_FROM?.includes("@") 
+      ? process.env.EMAIL_FROM.replace(/.*<([^>]+)>.*/, "$1").trim() 
+      : "mefake2620122@gmail.com";
 
     if (brevoApiKey) {
       fetch("https://api.brevo.com/v3/smtp/email", {
@@ -46,7 +49,7 @@ export async function POST(req: NextRequest) {
           "content-type": "application/json",
         },
         body: JSON.stringify({
-          sender: { name: "Portfolio Contact Form", email: "hello@adityasahu.dev" },
+          sender: { name: "Aditya Portfolio", email: senderEmail },
           to: [{ email: receiverEmail }],
           replyTo: { email: email, name: fullName },
           subject: `[Portfolio Contact] ${subject} - from ${fullName}`,
@@ -58,6 +61,13 @@ export async function POST(req: NextRequest) {
             <blockquote style="background:#f4f4f5;padding:12px;border-left:4px solid #3b82f6;">${message}</blockquote>
           `,
         }),
+      }).then(async (res) => {
+        if (!res.ok) {
+          const errText = await res.text();
+          console.error("Brevo API Error:", res.status, errText);
+        } else {
+          console.log("Email sent via Brevo successfully!");
+        }
       }).catch((emailErr) => {
         console.error("Brevo email send error:", emailErr.message);
       });
