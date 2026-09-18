@@ -49,22 +49,27 @@ export interface IProject extends Document {
   title: string;
   slug: string;
   description: string;
+  shortDescription?: string;
   longDescription?: string;
   techStack: string[];
+  technologies?: string[];
   gitHubUrl?: string;
+  githubUrl?: string;
   liveUrl?: string;
   thumbnail?: string;
+  image?: string;
   galleryImages: string[];
   featured: boolean;
   category: string;
   displayOrder: number;
-  status: "Currently Building" | "Coming Soon" | "Planning" | "Completed";
+  order?: number;
+  status: string;
   number?: string;
   problemStatement?: string;
   solution?: string;
   keyFeatures: string[];
   accentColor?: string;
-  mockupType: "portfolio" | "restaurant" | "school";
+  mockupType?: string;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -74,31 +79,50 @@ const projectSchema = new Schema<IProject>(
     title: { type: String, required: true, trim: true },
     slug: { type: String, required: true, unique: true, trim: true, lowercase: true },
     description: { type: String, required: true, trim: true },
+    shortDescription: { type: String, trim: true },
     longDescription: { type: String, trim: true },
     techStack: { type: [String], required: true, default: [] },
+    technologies: { type: [String], default: [] },
     gitHubUrl: { type: String, trim: true },
+    githubUrl: { type: String, trim: true },
     liveUrl: { type: String, trim: true },
     thumbnail: { type: String, trim: true },
+    image: { type: String, trim: true },
     galleryImages: { type: [String], default: [] },
     featured: { type: Boolean, default: false },
-    category: { type: String, required: true, trim: true },
+    category: { type: String, default: "General", trim: true },
     displayOrder: { type: Number, default: 0 },
+    order: { type: Number, default: 0 },
     status: {
       type: String,
-      enum: ["Currently Building", "Coming Soon", "Planning", "Completed"],
       default: "Completed",
+      trim: true,
     },
     number: { type: String, trim: true },
     problemStatement: { type: String, trim: true },
     solution: { type: String, trim: true },
     keyFeatures: { type: [String], default: [] },
     accentColor: { type: String, trim: true },
-    mockupType: { type: String, enum: ["portfolio", "restaurant", "school"], default: "portfolio" },
+    mockupType: { type: String, default: "portfolio" },
   },
   { timestamps: true }
 );
 
-projectSchema.index({ displayOrder: 1, createdAt: -1 });
+projectSchema.pre("save", function () {
+  const p = this as any;
+  if (p.shortDescription && !p.description) p.description = p.shortDescription;
+  if (p.description && !p.shortDescription) p.shortDescription = p.description;
+  if (p.technologies && (!p.techStack || p.techStack.length === 0)) p.techStack = p.technologies;
+  if (p.techStack && (!p.technologies || p.technologies.length === 0)) p.technologies = p.techStack;
+  if (p.githubUrl && !p.gitHubUrl) p.gitHubUrl = p.githubUrl;
+  if (p.gitHubUrl && !p.githubUrl) p.githubUrl = p.gitHubUrl;
+  if (p.image && !p.thumbnail) p.thumbnail = p.image;
+  if (p.thumbnail && !p.image) p.image = p.thumbnail;
+  if (typeof p.order === "number" && (typeof p.displayOrder !== "number" || p.displayOrder === 0)) p.displayOrder = p.order;
+  if (typeof p.displayOrder === "number" && (typeof p.order !== "number" || p.order === 0)) p.order = p.displayOrder;
+});
+
+projectSchema.index({ displayOrder: 1, order: 1, createdAt: -1 });
 
 export const Project: Model<IProject> =
   mongoose.models.Project || mongoose.model<IProject>("Project", projectSchema);

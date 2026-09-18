@@ -1,91 +1,202 @@
-export interface Project {
+export interface ProjectItem {
   id: string;
   number: string;
   title: string;
-  category: string;
-  role: string;
-  status: string;
-  timeline: string;
   description: string;
-  problemStatement: string;
-  solution: string;
-  keyFeatures: string[];
-  techStack: string[];
-  accentColor: string;
-  mockupType: "portfolio" | "restaurant" | "school";
+  technologies: string[];
+  githubUrl: string;
+  liveUrl?: string;
+  image: string;
+  featured: boolean;
+  accentColor?: string;
+  category?: string;
 }
 
-export const PROJECTS: Project[] = [
+export interface Project {
+  id?: string;
+  _id?: string;
+  number?: string;
+  title: string;
+  category?: string;
+  role?: string;
+  status?: string;
+  timeline?: string;
+  description: string;
+  problemStatement?: string;
+  solution?: string;
+  keyFeatures?: string[];
+  technologies?: string[];
+  techStack?: string[];
+  accentColor?: string;
+  githubUrl?: string;
+  gitHubUrl?: string;
+  liveUrl?: string;
+  image?: string;
+  thumbnail?: string;
+  featured?: boolean;
+  mockupType?: "portfolio" | "restaurant" | "school" | string;
+}
+
+export const FEATURED_PROJECTS: ProjectItem[] = [
   {
-    id: "portfolio-website",
+    id: "cv-analyzer",
     number: "01",
-    title: "Portfolio Website",
-    category: "Personal Brand & Showcase",
-    role: "Frontend Developer & Designer",
-    status: "Currently Building",
-    timeline: "Ongoing",
+    title: "CV Analyzer",
     description:
-      "A premium, Awwwards-inspired personal portfolio designed to showcase projects with immersive 3D effects, glassmorphism, and smooth GSAP animations.",
-    problemStatement:
-      "Traditional portfolios often feel static and fail to capture the user's attention or demonstrate advanced frontend capabilities.",
-    solution:
-      "Developed a highly interactive, cinematic experience using React, Framer Motion, and GSAP to create a memorable first impression.",
-    keyFeatures: [
-      "Cinematic GSAP Scroll Animations",
-      "Interactive 3D Elements",
-      "Custom Cursor & Magnetic Buttons",
-      "Dynamic Theming & Neon Glows",
+      "AI-powered resume analysis platform that analyzes CVs, evaluates ATS compatibility, identifies improvement areas, and helps users improve their resumes.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "React",
+      "Tailwind CSS",
+      "Express",
+      "Gemini",
+      "Groq",
     ],
-    techStack: ["React", "Next.js", "TypeScript", "Tailwind CSS", "Framer Motion", "GSAP"],
+    githubUrl: "https://github.com/adityasahu-builds/cv_analyzer",
+    liveUrl: "https://cv-analyzer-chi-five.vercel.app",
+    image: "/projects/cv-analyzer.png",
+    featured: true,
     accentColor: "#00d2ff",
-    mockupType: "portfolio",
+    category: "AI & Career Tech",
   },
   {
-    id: "restaurant-website",
+    id: "ultron",
     number: "02",
-    title: "Restaurant Platform",
-    category: "E-Commerce & Hospitality",
-    role: "Full Stack Developer",
-    status: "Coming Soon",
-    timeline: "Q3 2026",
+    title: "Ultron",
     description:
-      "A modern digital storefront for a premium restaurant featuring online ordering, dynamic menus, and reservation management.",
-    problemStatement:
-      "Restaurants struggle with clunky third-party ordering systems that dilute their brand and charge high commission fees.",
-    solution:
-      "Building a bespoke, highly performant platform that keeps customers engaged while streamlining kitchen operations.",
-    keyFeatures: [
-      "Real-time Order Tracking",
-      "Interactive Menu with 3D Models",
-      "Seamless Payment Integration",
-      "Admin Dashboard for Analytics",
+      "A personal AI assistant combining custom natural-language understanding, voice interaction and AI-powered task processing.",
+    technologies: [
+      "Flutter",
+      "Dart",
+      "Groq",
+      "Gemini",
+      "Whisper",
+      "Custom NLU",
     ],
-    techStack: ["React", "Node.js", "Express", "MongoDB", "Redux", "Stripe"],
-    accentColor: "#C8A96E",
-    mockupType: "restaurant",
+    githubUrl: "https://github.com/adityasahu-builds",
+    image: "/projects/ultron.png",
+    featured: true,
+    accentColor: "#a855f7",
+    category: "AI Assistant & NLU",
   },
   {
-    id: "school-website",
+    id: "aeris",
     number: "03",
-    title: "School Management System",
-    category: "EdTech & Administration",
-    role: "Lead Developer",
-    status: "Planning",
-    timeline: "Q4 2026",
+    title: "AERIS",
     description:
-      "A comprehensive school portal designed to connect students, teachers, and parents with real-time academic tracking and resource sharing.",
-    problemStatement:
-      "Educational institutions often rely on fragmented software, leading to communication gaps and inefficient data management.",
-    solution:
-      "Architecting a centralized hub that unifies attendance, grades, and announcements into a single, intuitive interface.",
-    keyFeatures: [
-      "Role-based Access Control",
-      "Live Attendance Tracking",
-      "Secure Parent Portal",
-      "Automated Grade Reports",
+      "An intelligent disaster-management platform designed for environmental monitoring, situational awareness and disaster-response support.",
+    technologies: [
+      "Next.js",
+      "TypeScript",
+      "APIs",
+      "Maps",
+      "Weather/Telemetry data",
     ],
-    techStack: ["Next.js", "PostgreSQL", "Prisma", "TypeScript", "Tailwind CSS"],
-    accentColor: "#A78BFA",
-    mockupType: "school",
+    githubUrl: "https://github.com/adityasahu-builds",
+    image: "/projects/aeris.jpg",
+    featured: true,
+    accentColor: "#38bdf8",
+    category: "Disaster Management & Telemetry",
   },
 ];
+
+export const ALL_PROJECTS: ProjectItem[] = [
+  ...FEATURED_PROJECTS,
+  {
+    id: "restaurant-platform",
+    number: "04",
+    title: "Restaurant Platform",
+    description:
+      "A modern digital storefront for a premium dining brand featuring online ordering, dynamic menus, and reservation management.",
+    technologies: ["React", "Node.js", "Express", "MongoDB", "Redux", "Stripe"],
+    githubUrl: "https://github.com/adityasahu-builds",
+    image: "/projects/cv-analyzer.png",
+    featured: false,
+    accentColor: "#C8A96E",
+    category: "E-Commerce & Hospitality",
+  },
+  {
+    id: "school-management",
+    number: "05",
+    title: "School Management System",
+    description:
+      "A comprehensive academic portal connecting students, faculty, and administrators with real-time tracking and reporting.",
+    technologies: ["Next.js", "PostgreSQL", "Prisma", "TypeScript", "Tailwind CSS"],
+    githubUrl: "https://github.com/adityasahu-builds",
+    image: "/projects/aeris.jpg",
+    featured: false,
+    accentColor: "#A78BFA",
+    category: "EdTech & Administration",
+  },
+];
+
+export const PROJECTS: ProjectItem[] = FEATURED_PROJECTS;
+
+export function normalizeProject(raw: any, index: number): ProjectItem {
+  const number = raw.number || String(index + 1).padStart(2, "0");
+  const title = raw.title || "";
+  const id = raw.id || raw._id || raw.slug || `project-${number}`;
+  const description = raw.description || "";
+  const technologies = raw.technologies || raw.techStack || [];
+  const githubUrl = raw.githubUrl || raw.gitHubUrl || "https://github.com/adityasahu-builds";
+  const liveUrl = raw.liveUrl && raw.liveUrl.trim() !== "" ? raw.liveUrl : undefined;
+  
+  // Default image fallback if none provided
+  const fallbackImage =
+    index === 0
+      ? "/projects/cv-analyzer.png"
+      : index === 1
+      ? "/projects/ultron.png"
+      : index === 2
+      ? "/projects/aeris.jpg"
+      : "/projects/cv-analyzer.png";
+      
+  const image = raw.image || raw.thumbnail || fallbackImage;
+  const featured = raw.featured ?? (index < 3);
+  const accentColor =
+    raw.accentColor ||
+    (index === 0 ? "#00d2ff" : index === 1 ? "#a855f7" : index === 2 ? "#38bdf8" : "#C8A96E");
+  const category = raw.category || "";
+
+  return {
+    id,
+    number,
+    title,
+    description,
+    technologies,
+    githubUrl,
+    liveUrl,
+    image,
+    featured,
+    accentColor,
+    category,
+  };
+}
+
+export function getAllProjects(rawProjects?: any[]): ProjectItem[] {
+  if (!rawProjects || rawProjects.length === 0) {
+    return ALL_PROJECTS;
+  }
+
+  // Exclude any portfolio self-showcase strictly
+  const nonPortfolio = rawProjects.filter(
+    (p: any) =>
+      !p?.title?.toLowerCase()?.includes("portfolio") &&
+      !p?.slug?.toLowerCase()?.includes("portfolio")
+  );
+
+  const normalized = nonPortfolio.map((p, idx) => normalizeProject(p, idx));
+
+  // Sort by order/displayOrder ascending
+  const sorted = [...normalized].sort((a, b) => {
+    const orderA = (a as any).order ?? (a as any).displayOrder ?? 0;
+    const orderB = (b as any).order ?? (b as any).displayOrder ?? 0;
+    return orderA - orderB;
+  });
+
+  return sorted.map((p, idx) => ({
+    ...p,
+    number: String(idx + 1).padStart(2, "0"),
+  }));
+}

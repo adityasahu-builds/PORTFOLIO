@@ -12,6 +12,8 @@ import { StructuredData } from "@/components/seo/StructuredData";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 
+import { FEATURED_PROJECTS } from "@/components/projects/projectsData";
+
 export default function Home() {
   const [preloaderDone, setPreloaderDone] = useState(false);
   useAutoTrackPageView();
@@ -32,6 +34,7 @@ export default function Home() {
       const res = await api.get("/projects?featured=true");
       return res.data?.data || [];
     },
+    initialData: FEATURED_PROJECTS,
     staleTime: 1000 * 60 * 60,
   });
 

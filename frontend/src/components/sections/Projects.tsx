@@ -1,36 +1,64 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useMemo } from "react";
 import { gsap } from "@/lib/gsap";
 import { registerGSAPPlugins } from "@/lib/gsap";
 import { ProjectShowcaseCard } from "@/components/projects/ProjectShowcaseCard";
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
-
-import { Project } from "@/components/projects/projectsData";
-
-interface DBProject extends Project {
-  _id: string;
-}
+import { FEATURED_PROJECTS, normalizeProject, ProjectItem } from "@/components/projects/projectsData";
+import { ArrowRight } from "lucide-react";
+import Link from "next/link";
 
 export function Projects() {
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef = useRef<HTMLDivElement>(null);
   const cardsRef = useRef<HTMLDivElement>(null);
 
-  // Fetch featured projects from dynamic database endpoint
-  const { data: projects = [], isLoading, isError, refetch } = useQuery<DBProject[]>({
+  // Fetch projects from dynamic database endpoint with instant default fallback
+  const { data: rawProjects } = useQuery<any[]>({
     queryKey: ["featured-projects"],
     queryFn: async () => {
       const res = await api.get("/projects?featured=true");
       return res.data?.data || [];
     },
-    staleTime: 1000 * 60 * 60,
+    placeholderData: FEATURED_PROJECTS,
+    staleTime: 1000 * 30,
+    refetchOnMount: true,
   });
 
+  // Exactly 3 featured projects dynamically from API/database
+  const projects: ProjectItem[] = useMemo(() => {
+    if (!rawProjects || rawProjects.length === 0) {
+      return FEATURED_PROJECTS;
+    }
+
+    const validFromApi = rawProjects
+      .filter(
+        (p: any) =>
+          !p?.title?.toLowerCase()?.includes("portfolio") &&
+          !p?.slug?.toLowerCase()?.includes("portfolio")
+      )
+      .map((p: any, idx: number) => normalizeProject(p, idx));
+
+    // Sort by order/displayOrder ascending
+    const sorted = [...validFromApi].sort((a, b) => {
+      const orderA = (a as any).order ?? (a as any).displayOrder ?? 0;
+      const orderB = (b as any).order ?? (b as any).displayOrder ?? 0;
+      return orderA - orderB;
+    });
+
+    const top3 = sorted.slice(0, 3);
+    if (top3.length === 0) return FEATURED_PROJECTS;
+
+    return top3.map((p, idx) => ({
+      ...p,
+      number: String(idx + 1).padStart(2, "0"),
+    }));
+  }, [rawProjects]);
+
   useEffect(() => {
-    // Wait until loading is complete and projects exist in the DOM
-    if (isLoading || projects.length === 0) return;
+    if (projects.length === 0) return;
 
     registerGSAPPlugins();
 
@@ -44,17 +72,17 @@ export function Projects() {
       // Header Animation
       gsap.fromTo(
         header.querySelectorAll(".split-char"),
-        { opacity: 0, y: 40, rotateX: -90 },
+        { opacity: 0, y: 30, rotateX: -60 },
         {
           opacity: 1,
           y: 0,
           rotateX: 0,
-          duration: 1,
-          stagger: 0.05,
-          ease: "back.out(1.7)",
+          duration: 0.8,
+          stagger: 0.04,
+          ease: "power3.out",
           scrollTrigger: {
             trigger: header,
-            start: "top 80%",
+            start: "top 85%",
           },
         }
       );
@@ -65,30 +93,31 @@ export function Projects() {
         {
           scaleX: 1,
           opacity: 1,
-          duration: 1.5,
+          duration: 1.2,
           ease: "power3.inOut",
           scrollTrigger: {
             trigger: header,
-            start: "top 80%",
+            start: "top 85%",
           },
         }
       );
 
-      gsap.utils.toArray(cards).forEach((c) => {
+      // Cards Reveal Animation
+      gsap.utils.toArray(cards).forEach((c, idx) => {
         const card = c as Element;
         gsap.fromTo(
           card,
-          { opacity: 0, y: 100, scale: 0.95, filter: "blur(10px)" },
+          { opacity: 0, y: 60, scale: 0.97 },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            filter: "blur(0px)",
-            duration: 1.2,
+            duration: 0.8,
+            delay: idx * 0.1,
             ease: "power2.out",
             scrollTrigger: {
               trigger: card,
-              start: "top 85%",
+              start: "top 88%",
             },
           }
         );
@@ -96,40 +125,45 @@ export function Projects() {
     }, section);
 
     return () => ctx.revert();
-  }, [projects, isLoading]);
+  }, [projects]);
 
   return (
     <section
       ref={sectionRef}
       id="projects"
-      aria-label="Projects section"
+      aria-label="Featured Projects section"
       className="relative min-h-screen bg-[#02040a] overflow-hidden"
     >
       {/* Immersive Background Effects */}
       <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-        {/* Grid */}
+        {/* Subtle Grid */}
         <div
-          className="absolute inset-0 opacity-[0.05]"
+          className="absolute inset-0 opacity-[0.04]"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
             backgroundSize: "40px 40px",
           }}
         />
-        {/* Blue fog */}
-        <div className="absolute top-0 left-0 w-full h-[50vh] bg-gradient-to-b from-[#00d2ff]/10 to-transparent blur-[120px]" />
-        <div className="absolute bottom-0 right-0 w-[50vw] h-[50vh] bg-gradient-to-tl from-[#4DFFB4]/5 to-transparent blur-[150px]" />
+        {/* Top/Bottom ambient light flares */}
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-5xl h-[350px] bg-gradient-to-b from-[#00d2ff]/10 to-transparent blur-[120px]" />
+        <div className="absolute bottom-0 right-0 w-[45vw] h-[45vh] bg-gradient-to-tl from-[#a855f7]/5 to-transparent blur-[140px]" />
       </div>
 
       {/* Section Header */}
       <div
         ref={headerRef}
-        className="container-site relative z-10 pt-32 pb-16 flex flex-col items-center text-center"
+        className="container-site relative z-10 pt-28 pb-14 sm:pt-32 sm:pb-16 flex flex-col items-center text-center"
       >
+        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.04] border border-white/[0.08] text-xs font-mono tracking-widest uppercase text-[#00d2ff] mb-4">
+          <span className="w-1.5 h-1.5 rounded-full bg-[#00d2ff] animate-pulse" />
+          Featured Projects
+        </div>
+
         <h2
-          className="text-4xl sm:text-5xl md:text-7xl font-bold font-display text-white mb-6 flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4"
-          aria-label="Featured Projects by Aditya Sahu — Full Stack Developer & AI Engineer"
+          className="text-3xl sm:text-4xl md:text-5xl font-bold font-display text-white mb-4 tracking-tight flex flex-wrap justify-center overflow-hidden perspective-[1000px] text-center px-4"
+          aria-label="Selected Work by Aditya Sahu"
         >
-          {"Featured Projects".split(" ").map((word, wIdx, arr) => (
+          {"Selected Work".split(" ").map((word, wIdx, arr) => (
             <span key={wIdx} className="inline-block whitespace-nowrap">
               {word.split("").map((char, cIdx) => (
                 <span
@@ -146,50 +180,51 @@ export function Projects() {
             </span>
           ))}
         </h2>
-        
-        <div className="glow-line w-24 h-1 bg-gradient-to-r from-[#0055ff] to-[#00d2ff] rounded-full shadow-[0_0_15px_#00d2ff] mb-8" style={{ transformOrigin: "center" }} />
-        
-        <p className="text-slate-400 max-w-2xl text-lg leading-relaxed">
-          A selection of full-stack React, Node.js, and MERN stack web applications — built with performance, clean architecture, and real-world problem solving in mind.
+
+        <div
+          className="glow-line w-20 h-0.5 bg-gradient-to-r from-[#0055ff] to-[#00d2ff] rounded-full shadow-[0_0_15px_#00d2ff] mb-6"
+          style={{ transformOrigin: "center" }}
+        />
+
+        <p className="text-slate-400 max-w-xl text-sm sm:text-base leading-relaxed px-4">
+          A curated selection of intelligent AI systems, disaster telemetry, and high-performance full-stack web applications.
         </p>
       </div>
 
-      {/* Showcase Cards List */}
-      <div ref={cardsRef} className="relative z-10 flex flex-col gap-0">
-        {isLoading ? (
-          // Premium pulsing skeleton loader cards to prevent layout jumps
-          [...Array(3)].map((_, idx) => (
-            <div key={idx} className="w-full min-h-screen py-24 flex items-center justify-center select-none">
-              <div className="container-site w-full flex flex-col lg:flex-row items-center gap-16 lg:gap-24 animate-pulse">
-                <div className="w-full lg:w-1/2 h-[350px] rounded-3xl bg-white/[0.01] border border-white/[0.04] backdrop-blur-md shadow-2xl" />
-                <div className="w-full lg:w-1/2 flex flex-col gap-6">
-                  <div className="h-6 w-32 bg-white/[0.02] rounded-lg" />
-                  <div className="h-12 w-3/4 bg-white/[0.02] rounded-lg" />
-                  <div className="h-24 w-full bg-white/[0.02] rounded-lg" />
-                  <div className="h-20 w-full bg-white/[0.01] border border-white/[0.04] rounded-2xl" />
-                </div>
-              </div>
-            </div>
-          ))
-        ) : isError ? (
-          <div className="w-full py-32 flex flex-col items-center justify-center text-center gap-4">
-            <p className="text-red-400 font-mono text-sm uppercase tracking-widest">Failed to load projects</p>
-            <button 
-              onClick={() => refetch()}
-              className="px-4 py-2 text-xs font-mono uppercase tracking-widest border border-red-500/20 text-red-400 bg-red-950/10 hover:bg-red-950/20 hover:border-red-400 transition-all rounded"
+      {/* 3-Card Grid */}
+      <div className="container-site relative z-10">
+        <div
+          ref={cardsRef}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 items-stretch"
+          role="list"
+          aria-label="Featured Projects List"
+        >
+          {projects.map((project, index) => (
+            <div
+              key={project.id}
+              role="listitem"
+              className={`h-full ${
+                index === 2
+                  ? "md:col-span-2 lg:col-span-1 md:max-w-[480px] md:mx-auto lg:max-w-none w-full"
+                  : ""
+              }`}
             >
-              Retry Connection
-            </button>
-          </div>
-        ) : projects.length === 0 ? (
-          <div className="w-full py-32 flex flex-col items-center justify-center text-center">
-            <p className="text-slate-500 font-mono text-sm uppercase tracking-widest">No featured projects found</p>
-          </div>
-        ) : (
-          projects.map((project: DBProject, index: number) => (
-            <ProjectShowcaseCard key={project._id} project={project} index={index} />
-          ))
-        )}
+              <ProjectShowcaseCard project={project} index={index} />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* "View More Projects →" CTA Button */}
+      <div className="container-site relative z-10 pt-16 sm:pt-20 pb-28 flex justify-center">
+        <Link
+          href="/projects"
+          className="group relative inline-flex items-center gap-3 px-8 py-3.5 rounded-xl text-xs sm:text-sm font-mono tracking-wider text-slate-200 bg-white/[0.03] border border-white/[0.08] hover:border-[#00d2ff]/40 hover:text-white hover:bg-white/[0.06] transition-all duration-300 shadow-lg hover:shadow-[0_0_25px_rgba(0,210,255,0.15)] focus-visible:outline-2 focus-visible:outline-[#00d2ff]"
+          aria-label="View all projects in archive"
+        >
+          <span>View More Projects</span>
+          <ArrowRight className="w-4 h-4 text-[#00d2ff] transition-transform duration-300 group-hover:translate-x-1" />
+        </Link>
       </div>
     </section>
   );
