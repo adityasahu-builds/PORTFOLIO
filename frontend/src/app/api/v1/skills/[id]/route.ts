@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/server/db/connection";
 import { Skill } from "@/server/models";
 import { extractAuthUser } from "@/server/utils/auth";
-import mongoose from "mongoose";
 
 export async function GET(
   req: NextRequest,
@@ -12,8 +12,10 @@ export async function GET(
     const { id } = await params;
     await connectDB();
 
-    const query = mongoose.Types.ObjectId.isValid(id) ? { _id: id } : { slug: id };
-    const skill = await Skill.findOne(query).lean();
+    let skill = await Skill.findById(id).lean();
+    if (!skill) {
+      skill = await Skill.findOne({ slug: id }).lean();
+    }
 
     if (!skill) {
       return NextResponse.json({ status: "error", message: "Skill not found" }, { status: 404 });
@@ -44,6 +46,9 @@ export async function PUT(
       return NextResponse.json({ status: "error", message: "Skill not found" }, { status: 404 });
     }
 
+    try {
+      revalidatePath("/");
+    } catch {}
     return NextResponse.json({ status: "success", data: skill, message: "Skill updated" });
   } catch (err: any) {
     return NextResponse.json({ status: "error", message: err.message }, { status: 500 });
@@ -68,6 +73,9 @@ export async function DELETE(
       return NextResponse.json({ status: "error", message: "Skill not found" }, { status: 404 });
     }
 
+    try {
+      revalidatePath("/");
+    } catch {}
     return NextResponse.json({ status: "success", message: "Skill deleted successfully" });
   } catch (err: any) {
     return NextResponse.json({ status: "error", message: err.message }, { status: 500 });

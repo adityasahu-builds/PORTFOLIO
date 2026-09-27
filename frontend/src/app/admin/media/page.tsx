@@ -256,7 +256,7 @@ export default function AdminMediaPage() {
       <div className="flex flex-col gap-2">
         <h1 className="text-xl font-bold tracking-tight text-white font-mono uppercase">Media Library</h1>
         <p className="text-slate-400 text-xs font-medium max-w-2xl">
-          Upload images, logos, certificates, and resumes to Cloudinary, then pick them across portfolio form sections.
+          Upload images, logos, certificates, and resumes to Supabase Storage, then pick them across portfolio form sections.
         </p>
       </div>
 
@@ -680,7 +680,7 @@ export default function AdminMediaPage() {
               </div>
 
               <p className="text-xs text-slate-400 leading-relaxed font-sans">
-                Are you sure you want to permanently delete this media asset? This action will destroy the file on Cloudinary and remove it from the CMS.
+                Are you sure you want to permanently delete this media asset? This action will destroy the file on Supabase Storage and remove it from the CMS.
               </p>
 
               <div className="flex items-center gap-2 pt-2">

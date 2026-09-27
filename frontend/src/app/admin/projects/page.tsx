@@ -779,7 +779,7 @@ export default function AdminProjectsPage() {
             </div>
 
             <MediaPicker
-              label="Project Image (Cloudinary / Media Library / URL)"
+              label="Project Image (Supabase Storage / URL)"
               placeholder="Choose from media library or paste image URL..."
               value={formState.thumbnail}
               onChange={(url) => setFormState({ ...formState, thumbnail: url })}

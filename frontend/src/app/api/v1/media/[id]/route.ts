@@ -2,15 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/server/db/connection";
 import { Media } from "@/server/models";
 import { extractAuthUser } from "@/server/utils/auth";
-import { v2 as cloudinary } from "cloudinary";
-
-if (process.env.CLOUDINARY_CLOUD_NAME) {
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
-}
+import { supabase } from "@/lib/supabase";
 
 export async function DELETE(
   req: NextRequest,
@@ -30,13 +22,15 @@ export async function DELETE(
       return NextResponse.json({ success: false, status: "error", message: "Media not found" }, { status: 404 });
     }
 
-    if (process.env.CLOUDINARY_CLOUD_NAME && media.publicId && !media.publicId.startsWith("local_")) {
-      await cloudinary.uploader.destroy(media.publicId).catch(() => {});
+    // Delete from Supabase Storage if it was uploaded to a bucket
+    if (media.publicId && !media.publicId.startsWith("supabase_db_")) {
+      await supabase.storage.from("portfolio").remove([media.publicId]).catch(() => {});
     }
 
+    // Delete record from Supabase PostgreSQL media table
     await Media.findByIdAndDelete(id);
 
-    return NextResponse.json({ success: true, status: "success", message: "Media deleted successfully" });
+    return NextResponse.json({ success: true, status: "success", message: "Media deleted successfully from Supabase" });
   } catch (err: any) {
     return NextResponse.json({ success: false, status: "error", message: err.message }, { status: 500 });
   }

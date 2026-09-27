@@ -25,7 +25,8 @@ export default function Home() {
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
-    staleTime: 1000 * 60 * 60, // 1 hour — reuse cached data across components
+    staleTime: 1000 * 30,
+    refetchOnMount: true,
   });
 
   const { data: projects = [] } = useQuery({
@@ -35,7 +36,8 @@ export default function Home() {
       return res.data?.data || [];
     },
     initialData: FEATURED_PROJECTS,
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 30,
+    refetchOnMount: true,
   });
 
   return (

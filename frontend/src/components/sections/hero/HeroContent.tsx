@@ -2,6 +2,8 @@
 
 import { motion, MotionValue } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
+import { api } from "@/lib/api";
 
 interface HeroContentProps {
   onExploreProjects?: () => void;
@@ -12,12 +14,29 @@ interface HeroContentProps {
 }
 
 export function HeroContent({
-  onExploreProjects,
-  onConnect,
   mouseX,
   mouseY,
   reducedMotion,
 }: HeroContentProps) {
+  const { data: personalInfo } = useQuery({
+    queryKey: ["personal-info"],
+    queryFn: async () => {
+      const res = await api.get("/personal-info");
+      return res.data?.data;
+    },
+    staleTime: 1000 * 30,
+  });
+
+  const fullName = personalInfo?.hero?.fullName || "Aditya Sahu";
+  const nameParts = fullName.trim().split(" ");
+  const firstName = nameParts[0] || "Aditya";
+  const lastName = nameParts.slice(1).join(" ") || "Sahu";
+  const professionalTitle = personalInfo?.hero?.professionalTitle || "Full Stack Developer & AI/ML Engineer";
+  const heroDescription =
+    personalInfo?.hero?.heroDescription ||
+    "I am a passionate software developer with a strong interest in Full Stack Web Development and AI/ML.";
+  const ctaButtonText = personalInfo?.hero?.ctaButtonText || "Explore My Projects";
+
   const handleScrollTo = (selector: string) => (e: React.MouseEvent) => {
     e.preventDefault();
     const el = document.querySelector(selector);
@@ -49,7 +68,7 @@ export function HeroContent({
         <span className="w-6 h-[2px] bg-gradient-to-r from-[#0055ff] to-[#00d2ff] rounded-full inline-block" />
       </motion.div>
 
-      {/* ── 2. Headline: "Aditya Sahu" ── */}
+      {/* ── 2. Headline: Dynamic Full Name ── */}
       <motion.h1
         initial={reducedMotion ? {} : { opacity: 0, y: 25 }}
         animate={{ opacity: 1, y: 0 }}
@@ -61,14 +80,14 @@ export function HeroContent({
         className="text-[clamp(40px,10.5vw,56px)] sm:text-[54px] lg:text-[72px] xl:text-[78px] font-extrabold tracking-[-0.02em] leading-none mb-[10px] sm:mb-4 lg:mb-10 font-sans max-w-full"
       >
         <span className="text-[#00d2ff] drop-shadow-[0_0_24px_rgba(0,210,255,0.35)]">
-          Aditya
+          {firstName}
         </span>{" "}
         <span className="text-white drop-shadow-[0_2px_12px_rgba(0,0,0,0.6)]">
-          Sahu
+          {lastName}
         </span>
       </motion.h1>
 
-      {/* ── 3. Subtitle: "Full Stack Developer & AI/ML Engineer" ── */}
+      {/* ── 3. Subtitle: Dynamic Professional Title ── */}
       <motion.div
         initial={reducedMotion ? {} : { opacity: 0, y: 15 }}
         animate={{ opacity: 1, y: 0 }}
@@ -80,7 +99,7 @@ export function HeroContent({
         className="mb-[14px] sm:mb-4 lg:mb-8 max-w-full"
       >
         <h2 className="text-[#00d2ff] text-[clamp(16px,4.3vw,22px)] sm:text-[20px] lg:text-[24px] font-semibold tracking-tight font-sans drop-shadow-[0_0_12px_rgba(0,210,255,0.25)] leading-[1.25] max-w-full break-words">
-          Full Stack Developer &amp; AI/ML Engineer
+          {professionalTitle}
         </h2>
       </motion.div>
 
@@ -95,12 +114,7 @@ export function HeroContent({
         }}
         className="text-slate-300/85 text-[15px] sm:text-[14px] lg:text-[17px] leading-[1.5] sm:leading-[1.6] max-w-full lg:max-w-[580px] mb-[22px] sm:mb-6 lg:mb-12 font-normal font-sans"
       >
-        <span className="block sm:hidden">
-          I build modern web applications and AI-powered solutions.
-        </span>
-        <span className="hidden sm:inline">
-          I am a passionate software developer with a strong interest in Full Stack Web Development and AI/ML.
-        </span>
+        <span>{heroDescription}</span>
       </motion.p>
 
       {/* ── 5. CTA BUTTONS ── */}
@@ -119,9 +133,9 @@ export function HeroContent({
           href="#projects"
           onClick={handleScrollTo("#projects")}
           className="group relative inline-flex items-center justify-center gap-2 min-h-[44px] px-4 sm:px-7 py-2.5 sm:py-3.5 lg:py-4 rounded-[12px] text-[13.5px] sm:text-[15px] font-semibold text-white bg-gradient-to-r from-[#0066ff] to-[#00b4ff] shadow-[0_4px_20px_rgba(0,102,255,0.45)] transition-all duration-300 hover:shadow-[0_0_28px_rgba(0,180,255,0.65)] hover:-translate-y-0.5 active:scale-95 shrink-0"
-          aria-label="Explore My Projects"
+          aria-label={ctaButtonText}
         >
-          <span>Explore My Projects</span>
+          <span>{ctaButtonText}</span>
           <ArrowUpRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
         </a>
 

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/server/db/connection";
 import { PersonalInfo } from "@/server/models";
 import { defaultPersonalInfo } from "@/server/db/seedData";
@@ -35,14 +36,19 @@ export async function PUT(req: NextRequest) {
     if (!info) {
       info = new PersonalInfo(body);
     } else {
-      if (body.hero) info.hero = { ...info.hero, ...body.hero };
-      if (body.about) info.about = { ...info.about, ...body.about };
-      if (body.contact) info.contact = { ...info.contact, ...body.contact };
-      if (body.socialLinks) info.socialLinks = { ...info.socialLinks, ...body.socialLinks };
-      if (body.seo) info.seo = { ...info.seo, ...body.seo };
+      if (body.hero) info.hero = { ...((info.hero as any) || {}), ...body.hero };
+      if (body.about) info.about = { ...((info.about as any) || {}), ...body.about };
+      if (body.contact) info.contact = { ...((info.contact as any) || {}), ...body.contact };
+      if (body.socialLinks) info.socialLinks = { ...((info.socialLinks as any) || {}), ...body.socialLinks };
+      if (body.seo) info.seo = { ...((info.seo as any) || {}), ...body.seo };
     }
 
     await info.save();
+    try {
+      revalidatePath("/");
+    } catch {
+      // safe fallback
+    }
     return NextResponse.json({
       status: "success",
       data: info,

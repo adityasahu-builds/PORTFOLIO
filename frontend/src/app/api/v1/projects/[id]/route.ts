@@ -4,7 +4,6 @@ import { connectDB } from "@/server/db/connection";
 import { Project } from "@/server/models";
 import { defaultProjects } from "@/server/db/seedData";
 import { extractAuthUser } from "@/server/utils/auth";
-import mongoose from "mongoose";
 
 export const dynamic = "force-dynamic";
 
@@ -16,8 +15,10 @@ export async function GET(
     const { id } = await params;
     await connectDB();
 
-    const query = mongoose.Types.ObjectId.isValid(id) ? { _id: id } : { slug: id };
-    const project = await Project.findOne(query).lean();
+    let project = await Project.findById(id).lean();
+    if (!project) {
+      project = await Project.findOne({ slug: id }).lean();
+    }
 
     if (!project) {
       const fallback = defaultProjects.find((p) => p.slug === id);

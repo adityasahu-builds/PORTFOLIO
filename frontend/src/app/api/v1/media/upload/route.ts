@@ -2,14 +2,26 @@ import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/server/db/connection";
 import { Media } from "@/server/models";
 import { extractAuthUser } from "@/server/utils/auth";
-import { v2 as cloudinary } from "cloudinary";
+import { supabase } from "@/lib/supabase";
 
-if (process.env.CLOUDINARY_CLOUD_NAME) {
-  cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-  });
+const BUCKET_NAME = "portfolio";
+
+let bucketChecked = false;
+async function ensureBucket() {
+  if (bucketChecked) return;
+  try {
+    const { data: buckets } = await supabase.storage.listBuckets();
+    const exists = buckets?.some((b) => b.name === BUCKET_NAME);
+    if (!exists) {
+      await supabase.storage.createBucket(BUCKET_NAME, {
+        public: true,
+        fileSizeLimit: 10485760, // 10MB
+      });
+    }
+    bucketChecked = true;
+  } catch (err: any) {
+    console.warn("Supabase Storage bucket check notice:", err?.message || err);
+  }
 }
 
 export async function POST(req: NextRequest) {
@@ -30,34 +42,35 @@ export async function POST(req: NextRequest) {
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
 
-    let secureUrl = "";
-    let publicId = `local_${Date.now()}_${file.name}`;
-    let width: number | undefined;
-    let height: number | undefined;
+    await ensureBucket();
 
-    if (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY) {
-      const uploadResult: any = await new Promise((resolve, reject) => {
-        const uploadStream = cloudinary.uploader.upload_stream(
-          {
-            folder,
-            resource_type: "auto",
-          },
-          (error, result) => {
-            if (error) reject(error);
-            else resolve(result);
-          }
-        );
-        uploadStream.end(buffer);
+    const cleanName = file.name.replace(/[^a-zA-Z0-9._-]/g, "_");
+    const filePath = `${folder}/${Date.now()}_${cleanName}`;
+
+    let secureUrl = "";
+    let publicId = filePath;
+
+    // 1. Upload to Supabase Storage
+    const { data: uploadData, error: uploadError } = await supabase.storage
+      .from(BUCKET_NAME)
+      .upload(filePath, buffer, {
+        contentType: file.type || "image/jpeg",
+        upsert: true,
       });
 
-      secureUrl = uploadResult.secure_url;
-      publicId = uploadResult.public_id;
-      width = uploadResult.width;
-      height = uploadResult.height;
+    if (!uploadError && uploadData) {
+      const { data: publicUrlData } = supabase.storage
+        .from(BUCKET_NAME)
+        .getPublicUrl(filePath);
+
+      secureUrl = publicUrlData.publicUrl;
+      publicId = filePath;
     } else {
-      // Fallback Data URL
+      console.warn("Supabase Storage upload warning, falling back to data URI:", uploadError?.message || uploadError);
+      // Clean fallback directly into Supabase media table
       const base64 = buffer.toString("base64");
       secureUrl = `data:${file.type};base64,${base64}`;
+      publicId = `supabase_db_${Date.now()}_${cleanName}`;
     }
 
     await connectDB();
@@ -65,8 +78,6 @@ export async function POST(req: NextRequest) {
       originalName: file.name,
       publicId,
       secureUrl,
-      width,
-      height,
       size: file.size,
       mimeType: file.type || "application/octet-stream",
       folder,
@@ -76,7 +87,7 @@ export async function POST(req: NextRequest) {
       success: true,
       status: "success",
       data: mediaDoc,
-      message: "File uploaded successfully",
+      message: "File uploaded successfully to Supabase",
     }, { status: 201 });
   } catch (err: any) {
     console.error("Media upload error:", err.message);

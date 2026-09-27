@@ -40,7 +40,7 @@ const TECH_STACK = {
   Languages: ["C", "C++", "JavaScript", "Python"],
   Frontend: ["HTML5", "CSS3", "Tailwind CSS", "React.js", "Next.js"],
   Backend: ["Node.js", "Express.js"],
-  Database: ["MongoDB", "MySQL"],
+  Database: ["PostgreSQL", "Supabase", "MongoDB"],
   Tools: ["Git", "GitHub", "VS Code", "Postman", "Figma"],
   Learning: ["Artificial Intelligence", "Machine Learning", "Prompt Engineering"]
 };
@@ -62,7 +62,8 @@ export function About() {
       const res = await api.get("/education?status=Active");
       return res.data?.data || [];
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 30,
+    refetchOnMount: true,
   });
 
   // Fetch dynamic personal information from API
@@ -72,7 +73,8 @@ export function About() {
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 30,
+    refetchOnMount: true,
   });
 
   // Fetch active skills dynamically from database
@@ -82,7 +84,8 @@ export function About() {
       const res = await api.get("/skills?status=Active");
       return res.data?.data || [];
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 30,
+    refetchOnMount: true,
   });
 
   // Fetch active certificates dynamically from database
@@ -92,7 +95,8 @@ export function About() {
       const res = await api.get("/certificates?status=Active");
       return res.data?.data || [];
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 1000 * 30,
+    refetchOnMount: true,
   });
 
   const fullName = personalInfo?.hero?.fullName || "Aditya Sahu";
