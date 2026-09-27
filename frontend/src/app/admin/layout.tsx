@@ -48,6 +48,7 @@ const NAV_ITEMS = [
   { label: "Experience", href: "/admin/experience", icon: Briefcase, subtitle: "Work history" },
   { label: "Education", href: "/admin/education", icon: GraduationCap, subtitle: "Academic background" },
   { label: "Certificates", href: "/admin/certificates", icon: Award, subtitle: "Achievements" },
+  { label: "Personal Info", href: "/admin/personal-info", icon: Sliders, subtitle: "Bio & contact details" },
   { label: "Messages", href: "/admin/messages", icon: Mail, subtitle: "Contact submissions", badge: "3" },
   { label: "Profile", href: "/admin/profile", icon: User, subtitle: "About me" },
   { label: "Settings", href: "/admin/settings", icon: Settings, subtitle: "Preferences" },
