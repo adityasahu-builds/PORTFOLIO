@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { api } from "@/lib/api";
+import { broadcastDataChange } from "@/lib/syncBroadcast";
 import { useToast } from "@/components/providers/ToastProvider";
 import { Button } from "@/components/ui/Button";
 import { InputField, SelectField, SwitchField } from "@/components/ui/Input";
@@ -94,6 +95,7 @@ export default function AdminSkillsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["skills-admin"] });
       queryClient.invalidateQueries({ queryKey: ["skills-active"] });
+      broadcastDataChange("skills");
       toast.success("Skill node added successfully!");
       setModalOpen(false);
     },
@@ -111,6 +113,7 @@ export default function AdminSkillsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["skills-admin"] });
       queryClient.invalidateQueries({ queryKey: ["skills-active"] });
+      broadcastDataChange("skills");
       toast.success("Skill node updated successfully!");
       setModalOpen(false);
     },
@@ -128,6 +131,7 @@ export default function AdminSkillsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["skills-admin"] });
       queryClient.invalidateQueries({ queryKey: ["skills-active"] });
+      broadcastDataChange("skills");
       toast.success("Skill deleted successfully.");
       setDeleteConfirmOpen(null);
     },
@@ -146,6 +150,7 @@ export default function AdminSkillsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["skills-admin"] });
       queryClient.invalidateQueries({ queryKey: ["skills-active"] });
+      broadcastDataChange("skills");
       toast.success(`Successfully deleted ${selectedIds.length} skills.`);
       setSelectedIds([]);
     },
@@ -163,6 +168,7 @@ export default function AdminSkillsPage() {
     onSuccess: (_, variables) => {
       queryClient.invalidateQueries({ queryKey: ["skills-admin"] });
       queryClient.invalidateQueries({ queryKey: ["skills-active"] });
+      broadcastDataChange("skills");
       toast.success(`Updated ${selectedIds.length} skills to ${variables.status}.`);
       setSelectedIds([]);
     },
@@ -180,6 +186,7 @@ export default function AdminSkillsPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["skills-admin"] });
       queryClient.invalidateQueries({ queryKey: ["skills-active"] });
+      broadcastDataChange("skills");
       toast.success("Constellation layout order saved.");
     },
     onError: (err: any) => {

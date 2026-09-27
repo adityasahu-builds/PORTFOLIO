@@ -6,36 +6,17 @@ import { defaultProjects } from "@/server/db/seedData";
 import { extractAuthUser } from "@/server/utils/auth";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
-// Safe one-time auto-migration to ensure initial projects (CV Analyzer, Ultron, AERIS) exist in database
+// Safe one-time auto-migration: only seed if the project collection is completely empty
 async function ensureProjectsMigrated() {
   try {
-    const cvAnalyzer = await Project.findOne({
-      $or: [{ slug: "cv-analyzer" }, { title: "CV Analyzer" }],
-    });
-
-    if (!cvAnalyzer) {
+    const count = await Project.countDocuments();
+    if (count === 0) {
       for (const item of defaultProjects) {
-        const existing = await Project.findOne({
-          $or: [{ slug: item.slug }, { title: item.title }],
-        });
-        if (!existing) {
-          await Project.create(item);
-        }
+        await Project.create(item);
       }
     }
-
-    // Ensure portfolio itself is never marked featured in database
-    await Project.updateMany(
-      {
-        $or: [
-          { slug: "portfolio-website" },
-          { title: { $regex: /portfolio/i } },
-        ],
-        featured: true,
-      },
-      { featured: false }
-    );
   } catch (e: any) {
     console.warn("Project migration check skipped or failed:", e.message);
   }
@@ -50,7 +31,6 @@ export async function GET(req: NextRequest) {
     const featured = searchParams.get("featured");
     const category = searchParams.get("category");
     const status = searchParams.get("status");
-    const includePortfolio = searchParams.get("includePortfolio") === "true";
 
     const query: any = {};
     if (featured === "true") {
@@ -63,27 +43,22 @@ export async function GET(req: NextRequest) {
       query.status = status;
     }
 
-    // Strictly exclude the portfolio self-showcase from public results
-    if (!includePortfolio) {
-      query.slug = { $ne: "portfolio-website" };
-      query.title = { $not: { $regex: /portfolio website/i } };
-    }
-
     let projectQuery = Project.find(query).sort({ displayOrder: 1, order: 1, createdAt: -1 });
-
-    // Homepage limit to exactly 3 featured projects
-    if (featured === "true") {
-      projectQuery = projectQuery.limit(3);
-    }
 
     const projects = await projectQuery.lean();
 
     if (!projects || projects.length === 0) {
-      const filtered = (defaultProjects as any[])
-        .filter((p) => (featured === "true" ? p.featured : true))
-        .filter((p) => p.slug !== "portfolio-website");
+      const totalCount = await Project.countDocuments();
+      if (totalCount === 0) {
+        const filtered = (defaultProjects as any[])
+          .filter((p) => (featured === "true" ? p.featured : true));
+        return NextResponse.json(
+          { status: "success", data: filtered },
+          { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+        );
+      }
       return NextResponse.json(
-        { status: "success", data: filtered.slice(0, featured === "true" ? 3 : undefined) },
+        { status: "success", data: [] },
         { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
       );
     }
@@ -94,17 +69,9 @@ export async function GET(req: NextRequest) {
     );
   } catch (err: any) {
     console.error("GET /api/v1/projects error:", err.message);
-    const { searchParams } = new URL(req.url);
-    const featured = searchParams.get("featured");
-    const filtered = (defaultProjects as any[])
-      .filter((p) => (featured === "true" ? p.featured : true))
-      .filter((p) => p.slug !== "portfolio-website");
     return NextResponse.json(
-      {
-        status: "success",
-        data: filtered.slice(0, featured === "true" ? 3 : undefined),
-      },
-      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+      { status: "error", message: err.message },
+      { status: 500, headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
     );
   }
 }
@@ -127,24 +94,6 @@ export async function POST(req: NextRequest) {
     const description = body.description || body.shortDescription || "";
     if (!description.trim()) {
       return NextResponse.json({ status: "error", message: "Project description is required." }, { status: 400 });
-    }
-
-    // Max 3 featured projects rule
-    if (body.featured === true) {
-      const currentFeaturedCount = await Project.countDocuments({
-        featured: true,
-        slug: { $ne: "portfolio-website" },
-      });
-
-      if (currentFeaturedCount >= 3) {
-        return NextResponse.json(
-          {
-            status: "error",
-            message: "You already have 3 featured projects. Unfeature an existing project before featuring this one.",
-          },
-          { status: 400 }
-        );
-      }
     }
 
     // Auto-generate slug if missing

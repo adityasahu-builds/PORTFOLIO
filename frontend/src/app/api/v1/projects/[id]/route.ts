@@ -6,6 +6,7 @@ import { defaultProjects } from "@/server/db/seedData";
 import { extractAuthUser } from "@/server/utils/auth";
 
 export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(
   req: NextRequest,
@@ -57,25 +58,6 @@ export async function PUT(
     // Required title validation
     if (body.title !== undefined && (!body.title || typeof body.title !== "string" || !body.title.trim())) {
       return NextResponse.json({ status: "error", message: "Project title cannot be empty." }, { status: 400 });
-    }
-
-    // Max 3 featured projects rule enforcement
-    if (body.featured === true) {
-      const otherFeaturedCount = await Project.countDocuments({
-        featured: true,
-        _id: { $ne: id },
-        slug: { $ne: "portfolio-website" },
-      });
-
-      if (otherFeaturedCount >= 3) {
-        return NextResponse.json(
-          {
-            status: "error",
-            message: "You already have 3 featured projects. Unfeature an existing project before featuring this one.",
-          },
-          { status: 400 }
-        );
-      }
     }
 
     // Synchronize aliases

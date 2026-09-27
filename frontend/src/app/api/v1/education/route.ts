@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/server/db/connection";
 import { Education } from "@/server/models";
 import { defaultEducations } from "@/server/db/seedData";
 import { extractAuthUser } from "@/server/utils/auth";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(req: NextRequest) {
   try {
@@ -20,16 +24,32 @@ export async function GET(req: NextRequest) {
       .lean();
 
     if (!educations || educations.length === 0) {
-      const filtered = status
-        ? defaultEducations.filter((e) => e.status === status)
-        : defaultEducations;
-      return NextResponse.json({ status: "success", data: filtered });
+      const totalCount = await Education.countDocuments();
+      if (totalCount === 0) {
+        const filtered = status
+          ? defaultEducations.filter((e) => e.status === status)
+          : defaultEducations;
+        return NextResponse.json(
+          { status: "success", data: filtered },
+          { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+        );
+      }
+      return NextResponse.json(
+        { status: "success", data: [] },
+        { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+      );
     }
 
-    return NextResponse.json({ status: "success", data: educations });
+    return NextResponse.json(
+      { status: "success", data: educations },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   } catch (err: any) {
     console.error("GET /api/v1/education error:", err.message);
-    return NextResponse.json({ status: "success", data: defaultEducations });
+    return NextResponse.json(
+      { status: "success", data: defaultEducations },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   }
 }
 
@@ -44,6 +64,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const education = await Education.create(body);
+
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/");
+    } catch {}
+
     return NextResponse.json({ status: "success", data: education, message: "Education created" }, { status: 201 });
   } catch (err: any) {
     return NextResponse.json({ status: "error", message: err.message }, { status: 500 });
@@ -66,6 +92,11 @@ export async function PATCH(req: NextRequest) {
       );
       await Promise.all(updates);
     }
+
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/");
+    } catch {}
 
     return NextResponse.json({ status: "success", message: "Education reordered successfully" });
   } catch (err: any) {

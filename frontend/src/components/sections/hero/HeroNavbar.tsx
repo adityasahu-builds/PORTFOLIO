@@ -33,7 +33,8 @@ export function HeroNavbar({
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
-    staleTime: 1000 * 60 * 60,
+    staleTime: 0,
+    refetchOnMount: true,
   });
 
   const resumeUrl = personalInfo?.socialLinks?.resume || personalInfo?.resume || "/cv.png";

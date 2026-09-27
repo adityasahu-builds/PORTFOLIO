@@ -73,10 +73,12 @@ export default function MediaPicker({
   // Upload file handler
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files || !e.target.files[0]) return;
+    const file = e.target.files[0];
+    e.target.value = "";
     setIsUploading(true);
 
     const formData = new FormData();
-    formData.append("file", e.target.files[0]);
+    formData.append("file", file);
     formData.append("tags", "picker-upload");
 
     try {
@@ -120,7 +122,16 @@ export default function MediaPicker({
         </label>
       )}
 
-      <div className="flex gap-2">
+      {/* Hidden native file input for direct OS File Explorer opening */}
+      <input
+        type="file"
+        ref={fileInputRef}
+        onChange={handleUpload}
+        accept={acceptType === "image" ? "image/*" : acceptType === "document" ? ".pdf,.doc,.docx" : "*"}
+        className="hidden"
+      />
+
+      <div className="flex gap-2 items-center">
         <input
           type="text"
           placeholder={placeholder}
@@ -129,13 +140,36 @@ export default function MediaPicker({
           className="flex-1 px-3 py-2 bg-[#0a0a0f]/60 border border-white/[0.04] rounded-xl text-xs text-white outline-none focus:border-[#00d2ff]/30 transition-all font-mono"
         />
 
+        {/* Primary Browse Button -> DIRECTLY OPENS LOCAL OS FILE EXPLORER */}
+        <button
+          type="button"
+          onClick={() => fileInputRef.current?.click()}
+          disabled={isUploading}
+          title="Browse file from your computer"
+          className="px-4 py-2 bg-gradient-to-r from-red-600/30 to-rose-600/20 hover:from-red-600/40 hover:to-rose-600/30 border border-red-500/30 text-xs font-semibold text-white rounded-xl active:scale-95 transition-all flex items-center gap-1.5 select-none shrink-0 cursor-pointer disabled:opacity-50"
+        >
+          {isUploading ? (
+            <>
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-[#ff2a4a]" />
+              <span>Uploading...</span>
+            </>
+          ) : (
+            <>
+              <FolderOpen className="w-3.5 h-3.5 text-red-400" />
+              <span>Browse</span>
+            </>
+          )}
+        </button>
+
+        {/* Secondary Button to open media library modal */}
         <button
           type="button"
           onClick={() => setModalOpen(true)}
-          className="px-4 py-2 bg-white/5 border border-white/[0.04] text-xs font-semibold text-white rounded-xl hover:bg-white/[0.08] active:bg-white/[0.12] transition-all flex items-center gap-1.5 select-none shrink-0"
+          title="Choose from uploaded media library"
+          className="px-3 py-2 bg-white/[0.04] hover:bg-white/[0.08] text-slate-300 hover:text-white border border-white/[0.06] rounded-xl text-xs font-semibold transition-all flex items-center gap-1 select-none shrink-0"
         >
-          <FolderOpen className="w-3.5 h-3.5" />
-          Browse
+          <Grid className="w-3.5 h-3.5 text-slate-400" />
+          <span className="hidden sm:inline">Library</span>
         </button>
 
         {value && (
@@ -143,11 +177,32 @@ export default function MediaPicker({
             type="button"
             onClick={() => onChange("")}
             className="px-3 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-400 border border-red-500/20 rounded-xl text-xs font-semibold transition-all select-none shrink-0"
+            title="Clear image URL"
           >
             Clear
           </button>
         )}
       </div>
+
+      {/* Live Image Preview Thumbnail if value exists */}
+      {value && (value.startsWith("http") || value.startsWith("data:") || value.startsWith("/")) && (
+        <div className="flex items-center gap-2 pt-1">
+          <div className="relative w-12 h-12 rounded-lg overflow-hidden border border-white/10 bg-black/40 shrink-0">
+            <img
+              src={value}
+              alt="Preview"
+              className="w-full h-full object-cover"
+              onError={(e) => {
+                (e.target as HTMLElement).style.display = "none";
+              }}
+            />
+          </div>
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] text-slate-400 truncate font-mono">{value}</p>
+            <p className="text-[9px] text-emerald-400 font-mono">Image attached</p>
+          </div>
+        </div>
+      )}
 
       {/* Picker Modal */}
       <AnimatePresence>

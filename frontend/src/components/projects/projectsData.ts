@@ -179,14 +179,7 @@ export function getAllProjects(rawProjects?: any[]): ProjectItem[] {
     return ALL_PROJECTS;
   }
 
-  // Exclude any portfolio self-showcase strictly
-  const nonPortfolio = rawProjects.filter(
-    (p: any) =>
-      !p?.title?.toLowerCase()?.includes("portfolio") &&
-      !p?.slug?.toLowerCase()?.includes("portfolio")
-  );
-
-  const normalized = nonPortfolio.map((p, idx) => normalizeProject(p, idx));
+  const normalized = rawProjects.map((p, idx) => normalizeProject(p, idx));
 
   // Sort by order/displayOrder ascending
   const sorted = [...normalized].sort((a, b) => {

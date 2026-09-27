@@ -21,6 +21,7 @@ import { TableSkeleton } from "@/components/ui/Skeleton";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Pagination } from "@/components/ui/Pagination";
 import MediaPicker from "@/components/ui/MediaPicker";
+import { broadcastDataChange } from "@/lib/syncBroadcast";
 import { Plus, Edit2, Trash2, Briefcase, Star, ExternalLink } from "lucide-react";
 
 const GithubIcon = ({ className = "w-4 h-4" }: { className?: string }) => (
@@ -116,6 +117,7 @@ export default function AdminProjectsPage() {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       queryClient.invalidateQueries({ queryKey: ["featured-projects"] });
       queryClient.invalidateQueries({ queryKey: ["all-projects"] });
+      broadcastDataChange("projects");
       toast.success("Project created successfully!");
       setModalOpen(false);
     },
@@ -134,6 +136,7 @@ export default function AdminProjectsPage() {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       queryClient.invalidateQueries({ queryKey: ["featured-projects"] });
       queryClient.invalidateQueries({ queryKey: ["all-projects"] });
+      broadcastDataChange("projects");
       toast.success("Project updated successfully!");
       setModalOpen(false);
     },
@@ -152,6 +155,7 @@ export default function AdminProjectsPage() {
       queryClient.invalidateQueries({ queryKey: ["projects"] });
       queryClient.invalidateQueries({ queryKey: ["featured-projects"] });
       queryClient.invalidateQueries({ queryKey: ["all-projects"] });
+      broadcastDataChange("projects");
       toast.success("Project deleted successfully.");
       setActiveDeleteProject(null);
     },

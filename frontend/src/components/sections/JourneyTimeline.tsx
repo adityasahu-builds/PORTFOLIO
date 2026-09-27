@@ -65,6 +65,8 @@ export function JourneyTimeline() {
       const res = await api.get("/experience?status=Active");
       return res.data?.data || [];
     },
+    staleTime: 0,
+    refetchOnMount: true,
   });
 
   // Sort: displayOrder ascending, then startDate descending

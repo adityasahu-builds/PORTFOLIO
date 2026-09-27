@@ -27,6 +27,7 @@ import {
   Compass,
 } from "lucide-react";
 import MediaPicker from "@/components/ui/MediaPicker";
+import { broadcastDataChange } from "@/lib/syncBroadcast";
 
 // Social media icon resolver
 const getSocialIcon = (key: string) => {
@@ -175,6 +176,9 @@ export default function AdminPersonalInfoPage() {
     onSuccess: (res) => {
       const updatedData = res.data?.data;
       queryClient.setQueryData(["admin-personal-info"], updatedData);
+      queryClient.invalidateQueries({ queryKey: ["personal-info"] });
+      queryClient.invalidateQueries({ queryKey: ["admin-personal-info"] });
+      broadcastDataChange("personal-info");
       setForm(JSON.parse(JSON.stringify(updatedData)));
       showNotification("success", "Personal information saved successfully.");
     },

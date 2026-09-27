@@ -20,6 +20,7 @@ import {
   Move,
 } from "lucide-react";
 import MediaPicker from "@/components/ui/MediaPicker";
+import { broadcastDataChange } from "@/lib/syncBroadcast";
 
 interface Experience {
   _id: string;
@@ -102,6 +103,7 @@ export default function AdminExperiencePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["experiences-admin"] });
       queryClient.invalidateQueries({ queryKey: ["experiences-active"] });
+      broadcastDataChange("experience");
       showNotification("success", "Experience milestone added successfully!");
       setModalOpen(false);
     },
@@ -119,6 +121,7 @@ export default function AdminExperiencePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["experiences-admin"] });
       queryClient.invalidateQueries({ queryKey: ["experiences-active"] });
+      broadcastDataChange("experience");
       showNotification("success", "Experience milestone updated successfully!");
       setModalOpen(false);
     },
@@ -136,6 +139,7 @@ export default function AdminExperiencePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["experiences-admin"] });
       queryClient.invalidateQueries({ queryKey: ["experiences-active"] });
+      broadcastDataChange("experience");
       showNotification("success", "Experience milestone deleted successfully.");
       setDeleteConfirmOpen(null);
     },
@@ -154,6 +158,7 @@ export default function AdminExperiencePage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["experiences-admin"] });
       queryClient.invalidateQueries({ queryKey: ["experiences-active"] });
+      broadcastDataChange("experience");
       showNotification("success", "Timeline reorder sequence saved.");
     },
     onError: (err: any) => {

@@ -23,23 +23,17 @@ export function Projects() {
       return res.data?.data || [];
     },
     placeholderData: FEATURED_PROJECTS,
-    staleTime: 1000 * 30,
+    staleTime: 0,
     refetchOnMount: true,
   });
 
-  // Exactly 3 featured projects dynamically from API/database
+  // Featured projects dynamically from API/database
   const projects: ProjectItem[] = useMemo(() => {
     if (!rawProjects || rawProjects.length === 0) {
       return FEATURED_PROJECTS;
     }
 
-    const validFromApi = rawProjects
-      .filter(
-        (p: any) =>
-          !p?.title?.toLowerCase()?.includes("portfolio") &&
-          !p?.slug?.toLowerCase()?.includes("portfolio")
-      )
-      .map((p: any, idx: number) => normalizeProject(p, idx));
+    const validFromApi = rawProjects.map((p: any, idx: number) => normalizeProject(p, idx));
 
     // Sort by order/displayOrder ascending
     const sorted = [...validFromApi].sort((a, b) => {
@@ -48,10 +42,10 @@ export function Projects() {
       return orderA - orderB;
     });
 
-    const top3 = sorted.slice(0, 3);
-    if (top3.length === 0) return FEATURED_PROJECTS;
+    const displayList = sorted.slice(0, 3);
+    if (displayList.length === 0) return FEATURED_PROJECTS;
 
-    return top3.map((p, idx) => ({
+    return displayList.map((p, idx) => ({
       ...p,
       number: String(idx + 1).padStart(2, "0"),
     }));

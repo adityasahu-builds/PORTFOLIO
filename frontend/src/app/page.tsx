@@ -25,7 +25,7 @@ export default function Home() {
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
-    staleTime: 1000 * 30,
+    staleTime: 0,
     refetchOnMount: true,
   });
 
@@ -35,8 +35,8 @@ export default function Home() {
       const res = await api.get("/projects?featured=true");
       return res.data?.data || [];
     },
-    initialData: FEATURED_PROJECTS,
-    staleTime: 1000 * 30,
+    placeholderData: FEATURED_PROJECTS,
+    staleTime: 0,
     refetchOnMount: true,
   });
 

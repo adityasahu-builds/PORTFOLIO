@@ -25,8 +25,20 @@ function convertMongoWhere(query: any): any {
       const v = value as any;
       if (v.$in) {
         where[targetKey] = { in: v.$in };
+      } else if (v.$nin) {
+        where[targetKey] = { notIn: v.$nin };
+      } else if (v.$ne !== undefined) {
+        where[targetKey] = { not: v.$ne };
       } else if (v.$regex) {
-        where[targetKey] = { contains: v.$regex, mode: "insensitive" };
+        const pattern = typeof v.$regex === "object" && v.$regex.source ? v.$regex.source : String(v.$regex);
+        where[targetKey] = { contains: pattern, mode: "insensitive" };
+      } else if (v.$not) {
+        if (v.$not.$regex) {
+          const pattern = typeof v.$not.$regex === "object" && v.$not.$regex.source ? v.$not.$regex.source : String(v.$not.$regex);
+          where[targetKey] = { not: { contains: pattern, mode: "insensitive" } };
+        } else {
+          where[targetKey] = { not: v.$not };
+        }
       } else if (v.$gte !== undefined || v.$lt !== undefined || v.$lte !== undefined || v.$gt !== undefined) {
         where[targetKey] = {};
         if (v.$gte !== undefined) where[targetKey].gte = v.$gte;

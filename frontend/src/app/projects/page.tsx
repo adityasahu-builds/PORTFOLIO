@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import { ProjectsArchiveClient } from "@/components/projects/ProjectsArchiveClient";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "All Projects — Aditya Sahu",
   description:

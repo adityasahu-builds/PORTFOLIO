@@ -32,6 +32,8 @@ export function Stack() {
       const res = await api.get("/skills?status=Active");
       return res.data?.data || [];
     },
+    staleTime: 0,
+    refetchOnMount: true,
   });
 
   // Sort: Featured skills first, then display order

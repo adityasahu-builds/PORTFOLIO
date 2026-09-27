@@ -4,6 +4,9 @@ import { connectDB } from "@/server/db/connection";
 import { Skill } from "@/server/models";
 import { extractAuthUser } from "@/server/utils/auth";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -21,7 +24,10 @@ export async function GET(
       return NextResponse.json({ status: "error", message: "Skill not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ status: "success", data: skill });
+    return NextResponse.json(
+      { status: "success", data: skill },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   } catch (err: any) {
     return NextResponse.json({ status: "error", message: err.message }, { status: 500 });
   }
@@ -47,6 +53,7 @@ export async function PUT(
     }
 
     try {
+      revalidatePath("/", "layout");
       revalidatePath("/");
     } catch {}
     return NextResponse.json({ status: "success", data: skill, message: "Skill updated" });
@@ -74,6 +81,7 @@ export async function DELETE(
     }
 
     try {
+      revalidatePath("/", "layout");
       revalidatePath("/");
     } catch {}
     return NextResponse.json({ status: "success", message: "Skill deleted successfully" });

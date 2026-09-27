@@ -20,6 +20,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import MediaPicker from "@/components/ui/MediaPicker";
+import { broadcastDataChange } from "@/lib/syncBroadcast";
 
 interface Education {
   _id: string;
@@ -99,6 +100,7 @@ export default function AdminEducationPage() {
       queryClient.invalidateQueries({ queryKey: ["admin-educations"] });
       queryClient.invalidateQueries({ queryKey: ["education-active"] });
       queryClient.invalidateQueries({ queryKey: ["education-active-contact"] });
+      broadcastDataChange("education");
       closeModal();
       showNotification("success", "Education record created successfully!");
     },
@@ -112,6 +114,7 @@ export default function AdminEducationPage() {
       queryClient.invalidateQueries({ queryKey: ["admin-educations"] });
       queryClient.invalidateQueries({ queryKey: ["education-active"] });
       queryClient.invalidateQueries({ queryKey: ["education-active-contact"] });
+      broadcastDataChange("education");
       closeModal();
       showNotification("success", "Education record updated successfully!");
     },
@@ -124,6 +127,7 @@ export default function AdminEducationPage() {
       queryClient.invalidateQueries({ queryKey: ["admin-educations"] });
       queryClient.invalidateQueries({ queryKey: ["education-active"] });
       queryClient.invalidateQueries({ queryKey: ["education-active-contact"] });
+      broadcastDataChange("education");
       setDeleteConfirmOpen(null);
       showNotification("success", "Education record deleted.");
     },
@@ -133,7 +137,12 @@ export default function AdminEducationPage() {
   const reorderMutation = useMutation({
     mutationFn: (orders: { id: string; displayOrder: number }[]) =>
       api.post("/education/reorder", { orders }),
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["admin-educations"] }),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin-educations"] });
+      queryClient.invalidateQueries({ queryKey: ["education-active"] });
+      queryClient.invalidateQueries({ queryKey: ["education-active-contact"] });
+      broadcastDataChange("education");
+    },
   });
 
   // ----- Helpers -----

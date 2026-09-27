@@ -4,6 +4,9 @@ import "./globals.css";
 import { SmoothScrollProvider } from "@/components/providers/SmoothScrollProvider";
 import { QueryProvider } from "@/components/providers/QueryProvider";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 
 /* ─── Fonts ─────────────────────────────────────────────── */
 const inter = Inter({
@@ -89,7 +92,7 @@ export async function generateMetadata(): Promise<Metadata> {
 
   try {
     const res = await fetch(`${API_BASE_URL}/personal-info`, {
-      next: { revalidate: 3600 }, // revalidate every hour
+      cache: "no-store",
     });
     if (!res.ok) throw new Error("API failed");
     const json = await res.json();

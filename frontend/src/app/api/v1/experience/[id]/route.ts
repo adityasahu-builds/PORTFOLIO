@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/server/db/connection";
 import { Experience } from "@/server/models";
 import { extractAuthUser } from "@/server/utils/auth";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(
   req: NextRequest,
@@ -16,7 +20,10 @@ export async function GET(
       return NextResponse.json({ status: "error", message: "Experience not found" }, { status: 404 });
     }
 
-    return NextResponse.json({ status: "success", data: experience });
+    return NextResponse.json(
+      { status: "success", data: experience },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   } catch (err: any) {
     return NextResponse.json({ status: "error", message: err.message }, { status: 500 });
   }
@@ -41,6 +48,11 @@ export async function PUT(
       return NextResponse.json({ status: "error", message: "Experience not found" }, { status: 404 });
     }
 
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/");
+    } catch {}
+
     return NextResponse.json({ status: "success", data: experience, message: "Experience updated" });
   } catch (err: any) {
     return NextResponse.json({ status: "error", message: err.message }, { status: 500 });
@@ -64,6 +76,11 @@ export async function DELETE(
     if (!experience) {
       return NextResponse.json({ status: "error", message: "Experience not found" }, { status: 404 });
     }
+
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/");
+    } catch {}
 
     return NextResponse.json({ status: "success", message: "Experience deleted successfully" });
   } catch (err: any) {

@@ -1,8 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/server/db/connection";
 import { Skill } from "@/server/models";
 import { defaultSkills } from "@/server/db/seedData";
 import { extractAuthUser } from "@/server/utils/auth";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(req: NextRequest) {
   try {
@@ -18,16 +22,32 @@ export async function GET(req: NextRequest) {
     const skills = await Skill.find(query).sort({ displayOrder: 1, createdAt: -1 }).lean();
 
     if (!skills || skills.length === 0) {
-      const filtered = status
-        ? defaultSkills.filter((s) => s.status === status)
-        : defaultSkills;
-      return NextResponse.json({ status: "success", data: filtered });
+      const totalCount = await Skill.countDocuments();
+      if (totalCount === 0) {
+        const filtered = status
+          ? defaultSkills.filter((s) => s.status === status)
+          : defaultSkills;
+        return NextResponse.json(
+          { status: "success", data: filtered },
+          { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+        );
+      }
+      return NextResponse.json(
+        { status: "success", data: [] },
+        { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+      );
     }
 
-    return NextResponse.json({ status: "success", data: skills });
+    return NextResponse.json(
+      { status: "success", data: skills },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   } catch (err: any) {
     console.error("GET /api/v1/skills error:", err.message);
-    return NextResponse.json({ status: "success", data: defaultSkills });
+    return NextResponse.json(
+      { status: "success", data: defaultSkills },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   }
 }
 
@@ -46,6 +66,12 @@ export async function POST(req: NextRequest) {
     }
 
     const skill = await Skill.create(body);
+
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/");
+    } catch {}
+
     return NextResponse.json({ status: "success", data: skill, message: "Skill created" }, { status: 201 });
   } catch (err: any) {
     return NextResponse.json({ status: "error", message: err.message }, { status: 500 });
@@ -68,6 +94,11 @@ export async function PATCH(req: NextRequest) {
       );
       await Promise.all(updates);
     }
+
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/");
+    } catch {}
 
     return NextResponse.json({ status: "success", message: "Skills reordered successfully" });
   } catch (err: any) {

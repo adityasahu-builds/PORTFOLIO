@@ -1,7 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
+import { revalidatePath } from "next/cache";
 import { connectDB } from "@/server/db/connection";
 import { Certificate } from "@/server/models";
 import { extractAuthUser } from "@/server/utils/auth";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export async function GET(req: NextRequest) {
   try {
@@ -18,10 +22,16 @@ export async function GET(req: NextRequest) {
       .sort({ displayOrder: 1, createdAt: -1 })
       .lean();
 
-    return NextResponse.json({ status: "success", data: certificates || [] });
+    return NextResponse.json(
+      { status: "success", data: certificates || [] },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   } catch (err: any) {
     console.error("GET /api/v1/certificates error:", err.message);
-    return NextResponse.json({ status: "success", data: [] });
+    return NextResponse.json(
+      { status: "success", data: [] },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   }
 }
 
@@ -36,6 +46,12 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
 
     const certificate = await Certificate.create(body);
+
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/");
+    } catch {}
+
     return NextResponse.json({ status: "success", data: certificate, message: "Certificate created" }, { status: 201 });
   } catch (err: any) {
     return NextResponse.json({ status: "error", message: err.message }, { status: 500 });
@@ -58,6 +74,11 @@ export async function PATCH(req: NextRequest) {
       );
       await Promise.all(updates);
     }
+
+    try {
+      revalidatePath("/", "layout");
+      revalidatePath("/");
+    } catch {}
 
     return NextResponse.json({ status: "success", message: "Certificates reordered successfully" });
   } catch (err: any) {

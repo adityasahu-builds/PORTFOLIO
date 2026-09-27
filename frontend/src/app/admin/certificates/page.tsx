@@ -21,6 +21,7 @@ import {
   Tag,
 } from "lucide-react";
 import MediaPicker from "@/components/ui/MediaPicker";
+import { broadcastDataChange } from "@/lib/syncBroadcast";
 
 interface Certificate {
   _id: string;
@@ -85,7 +86,9 @@ export default function AdminCertificatesPage() {
     mutationFn: (data: CertificateFormData) => api.post("/certificates", data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["certificates-active"] });
       queryClient.invalidateQueries({ queryKey: ["certificates-count"] });
+      broadcastDataChange("certificates");
       closeModal();
       showNotification("success", "Certificate created successfully.");
     },
@@ -98,6 +101,9 @@ export default function AdminCertificatesPage() {
       api.put(`/certificates/${id}`, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["certificates-active"] });
+      queryClient.invalidateQueries({ queryKey: ["certificates-count"] });
+      broadcastDataChange("certificates");
       closeModal();
       showNotification("success", "Certificate updated successfully.");
     },
@@ -109,7 +115,9 @@ export default function AdminCertificatesPage() {
     mutationFn: (id: string) => api.delete(`/certificates/${id}`),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin-certificates"] });
+      queryClient.invalidateQueries({ queryKey: ["certificates-active"] });
       queryClient.invalidateQueries({ queryKey: ["certificates-count"] });
+      broadcastDataChange("certificates");
       setDeleteConfirmId(null);
       showNotification("success", "Certificate deleted successfully.");
     },

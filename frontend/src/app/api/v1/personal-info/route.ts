@@ -5,20 +5,29 @@ import { PersonalInfo } from "@/server/models";
 import { defaultPersonalInfo } from "@/server/db/seedData";
 import { extractAuthUser } from "@/server/utils/auth";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export async function GET() {
   try {
     await connectDB();
     const info = await PersonalInfo.findOne().lean();
-    return NextResponse.json({
-      status: "success",
-      data: info || defaultPersonalInfo,
-    });
+    return NextResponse.json(
+      {
+        status: "success",
+        data: info || defaultPersonalInfo,
+      },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   } catch (err: any) {
     console.error("GET /api/v1/personal-info error:", err.message);
-    return NextResponse.json({
-      status: "success",
-      data: defaultPersonalInfo,
-    });
+    return NextResponse.json(
+      {
+        status: "success",
+        data: defaultPersonalInfo,
+      },
+      { headers: { "Cache-Control": "no-store, no-cache, must-revalidate" } }
+    );
   }
 }
 
@@ -45,6 +54,7 @@ export async function PUT(req: NextRequest) {
 
     await info.save();
     try {
+      revalidatePath("/", "layout");
       revalidatePath("/");
     } catch {
       // safe fallback

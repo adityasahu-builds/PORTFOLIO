@@ -23,6 +23,7 @@ import {
   Loader2,
   ExternalLink,
 } from "lucide-react";
+import { broadcastDataChange } from "@/lib/syncBroadcast";
 
 interface MediaAsset {
   _id: string;
@@ -103,6 +104,7 @@ export default function AdminMediaPage() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["media-assets"] });
+      broadcastDataChange("media");
       showNotification("success", "Media asset deleted successfully.");
       setDeleteConfirmId(null);
       if (previewAsset && previewAsset._id === deleteConfirmId) {
@@ -131,7 +133,6 @@ export default function AdminMediaPage() {
     e.preventDefault();
     e.stopPropagation();
     setIsDragActive(false);
-
     if (e.dataTransfer.files && e.dataTransfer.files[0]) {
       addFilesToQueue(Array.from(e.dataTransfer.files));
     }
@@ -141,6 +142,7 @@ export default function AdminMediaPage() {
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       addFilesToQueue(Array.from(e.target.files));
+      e.target.value = "";
     }
   };
 
@@ -193,6 +195,7 @@ export default function AdminMediaPage() {
 
       // Invalidate queries to refresh listing
       queryClient.invalidateQueries({ queryKey: ["media-assets"] });
+      broadcastDataChange("media");
     } catch (error: any) {
       const msg = error.response?.data?.message || "Upload failed.";
       setUploadQueue((prev) =>

@@ -21,7 +21,7 @@ export function ProjectsArchiveClient() {
       return res.data?.data || [];
     },
     placeholderData: ALL_PROJECTS,
-    staleTime: 1000 * 30,
+    staleTime: 0,
     refetchOnMount: true,
   });
 

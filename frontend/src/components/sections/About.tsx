@@ -62,7 +62,7 @@ export function About() {
       const res = await api.get("/education?status=Active");
       return res.data?.data || [];
     },
-    staleTime: 1000 * 30,
+    staleTime: 0,
     refetchOnMount: true,
   });
 
@@ -73,7 +73,7 @@ export function About() {
       const res = await api.get("/personal-info");
       return res.data?.data;
     },
-    staleTime: 1000 * 30,
+    staleTime: 0,
     refetchOnMount: true,
   });
 
@@ -84,7 +84,7 @@ export function About() {
       const res = await api.get("/skills?status=Active");
       return res.data?.data || [];
     },
-    staleTime: 1000 * 30,
+    staleTime: 0,
     refetchOnMount: true,
   });
 
@@ -95,7 +95,7 @@ export function About() {
       const res = await api.get("/certificates?status=Active");
       return res.data?.data || [];
     },
-    staleTime: 1000 * 30,
+    staleTime: 0,
     refetchOnMount: true,
   });
 
